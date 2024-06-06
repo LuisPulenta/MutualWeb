@@ -1,0 +1,38 @@
+﻿@page "/tiposclientes"
+
+@inject IRepository repository
+
+<h3>Tipos de Clientes</h3>
+
+@if (@TiposClientes == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tipo Cliente</th>
+                <th>Descripción Cliente</th>
+                <th>Cliente Inae</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tipoCliente in TiposClientes!)
+            {
+                <tr>
+                    <td>@tipoCliente.Id</td>
+                    <td>@tipoCliente.DescripcionTipoCliente</td>
+                    <td>@tipoCliente.ClienteInae</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-warning">Editar</a>
+                        <button class="btn btn-sm btn-outline-danger">Borrar</button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
