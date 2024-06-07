@@ -11,7 +11,7 @@ using MutualWeb.Backend.Data;
 namespace MutualWeb.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240606211805_InitialDb")]
+    [Migration("20240607195652_InitialDb")]
     partial class InitialDb
     {
         /// <inheritdoc />
@@ -23,6 +23,27 @@ namespace MutualWeb.Backend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("MutualWeb.Shared.Entities.Clientes.Especialidad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Nombre")
+                        .IsUnique();
+
+                    b.ToTable("Especialidades");
+                });
 
             modelBuilder.Entity("MutualWeb.Shared.Entities.Clientes.TipoCliente", b =>
                 {

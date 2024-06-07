@@ -5,13 +5,13 @@ using MutualWeb.Shared.Entities.Clientes;
 
 namespace MutualWeb.Frontend.Pages.Clientes
 {
-    public partial class TiposClientesIndex
+    public partial class EspecialidadesIndex
     {
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
 
-        public List<TipoCliente>? TiposClientes { get; set; }
+        public List<Especialidad>? Especialidades { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -20,22 +20,22 @@ namespace MutualWeb.Frontend.Pages.Clientes
 
         private async Task LoadAsync()
         {
-            var responseHppt = await Repository.GetAsync<List<TipoCliente>>("api/tiposclientes");
+            var responseHppt = await Repository.GetAsync<List<Especialidad>>("api/especialidades");
             if (responseHppt.Error)
             {
                 var message = await responseHppt.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-            TiposClientes = responseHppt.Response!;
+            Especialidades = responseHppt.Response!;
         }
 
-        private async Task DeleteAsync(TipoCliente tipocliente)
+        private async Task DeleteAsync(Especialidad especialidad)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Está seguro que quieres borrar la TipoCliente: {tipocliente.DescripcionTipoCliente}?",
+                Text = $"¿Está seguro que quieres borrar la Especialidad: {especialidad.Nombre}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true
             });
@@ -47,7 +47,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
                 return;
             }
 
-            var responseHTTP = await Repository.DeleteAsync($"api/tiposclientes/{tipocliente.Id}");
+            var responseHTTP = await Repository.DeleteAsync($"api/especialidades/{especialidad.Id}");
             if (responseHTTP.Error)
             {
                 if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)

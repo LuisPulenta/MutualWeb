@@ -1,0 +1,20 @@
+﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>Tipo de Cliente:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@TipoCliente.DescripcionTipoCliente" />
+            <ValidationMessage For="@(() => TipoCliente.DescripcionTipoCliente)" />
+        </div>
+        <label>Cliente Inae:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@TipoCliente.ClienteInae" />
+            <ValidationMessage For="@(() => TipoCliente.ClienteInae)" />
+        </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+</EditForm>

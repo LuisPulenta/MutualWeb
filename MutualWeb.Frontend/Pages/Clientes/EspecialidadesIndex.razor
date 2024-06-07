@@ -1,0 +1,38 @@
+﻿@page "/especialidades"
+
+@inject IRepository repository
+
+<h3>Especialidades</h3>
+
+<div class="mb-3">
+    <a class="btn btn-sm btn-outline-primary" href="/especialidades/create">Nueva Especialidad</a>
+</div>
+
+<GenericList MyList="Especialidades">
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Especialidad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var especialidad in Especialidades!)
+                {
+                    <tr>
+                        <td>@especialidad.Id</td>
+                        <td>@especialidad.Nombre</td>
+                        <td>
+                            <a href="/especialidades/edit/@especialidad.Id" class="btn btn-warning">Editar</a>
+                            <button class="btn btn-danger" @onclick=@(() => DeleteAsync(especialidad))>Borrar</button>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </Body>
+</GenericList>
+
