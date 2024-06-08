@@ -11,35 +11,127 @@
     <nav class="flex-column">
 
         <div class="nav-item px-3">
-            <img src="img/logo.jpg" alt="Logo" width="220" />
+            <img src="img/logo.jpg" alt="Logo" width="160" />
         </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/tiposclientes">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Tipos de Clientes
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/especialidades">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Especialidades
-            </NavLink>
+        <br />
+
+        @* ------------------- CLIENTES ---------------------- *@
+        <div class="top-row px-4 bg-primary d-flex justify-content-between">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white mx-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Clientes
+                                </a>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+
+                                        <div class="d-flex align-items-center">
+                                            <a class="dropdown-item ms-1 text-black" href="/especialidades">Especialidades</a>
+                                        </div>
+
+                                    </li>
+                                    <li>
+                                        <div class="d-flex align-items-center">
+                                            <a class="dropdown-item ms-1 text-black" href="/tiposclientes">Tipos de Clientes</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
         </div>
 
-@*         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
+
+        @* ------------------- APORTES ---------------------- *@
+        <div class="top-row px-4 bg-primary d-flex justify-content-between">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white mx-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Aportes
+                                </a>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+
+                                        <div class="d-flex align-items-center">
+                                            <a class="dropdown-item ms-1 text-black" href="/especialidades">Indices</a>
+                                        </div>
+
+                                    </li>
+                                    <li>
+                                        <div class="d-flex align-items-center">
+                                            <a class="dropdown-item ms-1 text-black" href="/tiposclientes">Aportes de un mes</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div> *@
+
+        @* ------------------- JUBILACIONES ---------------------- *@
+        <div class="top-row px-4 bg-primary d-flex justify-content-between">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white mx-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Jubilaciones
+                                </a>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+
+                                        <div class="d-flex align-items-center">
+                                            <a class="dropdown-item ms-1 text-black" href="/especialidades">Módulos</a>
+                                        </div>
+
+                                    </li>
+                                    <li>
+                                        <div class="d-flex align-items-center">
+                                            <a class="dropdown-item ms-1 text-black" href="/tiposclientes">Liquidar Jubilación</a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="d-flex align-items-center">
+                                            <a class="dropdown-item ms-1 text-black" href="/tiposclientes">Recibos</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
     </nav>
 </div>
 

@@ -1,6 +1,6 @@
 html, body {
     font-family: 'Noto Sans', Helvetica, Arial, sans-serif;
-    font-size: 10px;
+    font-size: 14px;
 }
 
 h1:focus {
@@ -135,4 +135,8 @@ td {
 
 a, button {
     padding: 1px !important;
+}
+
+.div.nav-item{
+    padding: 0px !important;
 }
