@@ -95,8 +95,8 @@ namespace MutualWeb.Shared.Entities.Clientes
         [Display(Name = "Fecha de Fallecimiento Cónyuge")]
         public DateOnly? FechaFallecimientoConyuge { get; set; }
 
-        [Display(Name = "Categoría")]
-        public int Categoria { get; set; }
+        [Display(Name = "Tipo de Cliente")]
+        public TipoCliente TipoCliente { get; set; } = null!;
 
         public bool Socio { get; set; }
 
@@ -169,7 +169,7 @@ namespace MutualWeb.Shared.Entities.Clientes
         public int? EgresoPagoSepTitular { get; set; }
 
         [Display(Name = "Monto Pago Sepelio Titular")]
-        public decimal? MontoPagoSepTitular { get; set; }
+        public float? MontoPagoSepTitular { get; set; }
 
         [Display(Name = "Fecha Pago Sepelio Cónyuge")]
         public DateOnly? FecPagoSepConyuge { get; set; }
@@ -178,7 +178,7 @@ namespace MutualWeb.Shared.Entities.Clientes
         public int? EgresoPagoSepConyuge { get; set; }
 
         [Display(Name = "Monto Pago Sepelio Cónyuge")]
-        public decimal? MontoPagoSepConyuge { get; set; }
+        public float? MontoPagoSepConyuge { get; set; }
 
         [Display(Name = "Fecha Pago Seguro Enfermedad")]
         public DateOnly? FecPagoSegEnf { get; set; }
@@ -187,7 +187,7 @@ namespace MutualWeb.Shared.Entities.Clientes
         public int? EgresoPagoSegEnf { get; set; }
 
         [Display(Name = "Monto Pago Seguro Enfermedad")]
-        public decimal? MontoPagoSegEnf { get; set; }
+        public float? MontoPagoSegEnf { get; set; }
 
         [Display(Name = "Plan Seguro Enfermedad")]
         [MaxLength(1, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]

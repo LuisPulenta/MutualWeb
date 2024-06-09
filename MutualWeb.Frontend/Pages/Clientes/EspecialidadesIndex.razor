@@ -15,6 +15,7 @@
                 <tr>
                     <th>Id</th>
                     <th>Especialidad</th>
+                    <th>Clientes</th>
                     <th></th>
                 </tr>
             </thead>
@@ -24,6 +25,7 @@
                     <tr>
                         <td>@especialidad.Id</td>
                         <td>@especialidad.Nombre</td>
+                        <td>@especialidad.ClientesNumber</td>
                         <td>
                             <a href="/especialidades/edit/@especialidad.Id" class="btn btn-warning">Editar</a>
                             <button class="btn btn-danger" @onclick=@(() => DeleteAsync(especialidad))>Borrar</button>

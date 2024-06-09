@@ -14,7 +14,9 @@
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Especialidad</th>
+                    <th>Tipo de Cliente</th>
+                    <th>Cliente Inae</th>
+                    <th>Clientes</th>
                     <th></th>
                 </tr>
             </thead>
@@ -25,6 +27,7 @@
                         <td>@tipoCliente.Id</td>
                         <td>@tipoCliente.DescripcionTipoCliente</td>
                         <td>@tipoCliente.ClienteInae</td>
+                        <td>@tipoCliente.ClientesNumber</td>
                         <td>
                             <a href="/tiposclientes/edit/@tipoCliente.Id" class="btn btn-warning">Editar</a>
                             <button class="btn btn-danger" @onclick=@(() => DeleteAsync(tipoCliente))>Borrar</button>
