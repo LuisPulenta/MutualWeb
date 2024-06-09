@@ -10,7 +10,13 @@
         </div>
         <label>Cliente Inae:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@TipoCliente.ClienteInae" />
+            <InputRadioGroup @bind-Value="TipoCliente.ClienteInae">
+                @foreach (var option in rdOptions)
+                {
+                    <InputRadio class="m-2" Value="option" /> @option
+                }
+            </InputRadioGroup>
+            <br />
             <ValidationMessage For="@(() => TipoCliente.ClienteInae)" />
         </div>
     </div>

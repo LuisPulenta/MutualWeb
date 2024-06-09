@@ -8,6 +8,8 @@ namespace MutualWeb.Frontend.Pages.Clientes
 {
     public partial class TipoClienteForm
     {
+        List<string> rdOptions = new List<string> { "Activo", "Adherente"};
+
         private EditContext editContext = null!;
 
         [EditorRequired, Parameter] public TipoCliente TipoCliente { get; set; } = null!;
