@@ -1,4 +1,5 @@
-﻿using MutualWeb.Shared.Entities.Clientes;
+﻿using MutualWeb.Shared.DTOs;
+using MutualWeb.Shared.Entities.Clientes;
 using MutualWeb.Shared.Responses;
 
 namespace MutualWeb.Backend.UnitsOfWork.Interfaces
@@ -7,7 +8,9 @@ namespace MutualWeb.Backend.UnitsOfWork.Interfaces
     {
         Task<ActionResponse<TipoCliente>> GetAsync(int id);
 
-        Task<ActionResponse<IEnumerable<TipoCliente>>> GetAsync();
+        Task<ActionResponse<IEnumerable<TipoCliente>>> GetAsync(PaginationDTO pagination);
+
+        Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
     }
 }
 

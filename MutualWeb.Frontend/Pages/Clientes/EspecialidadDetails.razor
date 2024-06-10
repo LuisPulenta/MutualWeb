@@ -1,0 +1,50 @@
+﻿@page "/especialidades/details/{EspecialidadId:int}"
+
+@if (especialidad is null)
+{
+    <Loading />
+}
+else
+{
+    <h3>@especialidad.Nombre</h3>
+    <div class="mb-2">
+        <a class="btn btn-primary" href="/clientes/create">Nuevo Cliente</a>
+        <a class="btn btn-success" href="/especialidades">Regresar</a>
+    </div>
+
+    <GenericList MyList="especialidad.Clientes!.ToList()">
+        <Body>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Titular</th>
+                        <th>DNI</th>
+                        <th>Domicilio</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cliente in especialidad.Clientes!)
+                    {
+                        <tr>
+                            <td>
+                                @cliente.Titular
+                            </td>
+                            <td>
+                                @cliente.DNI
+                            </td>
+                            <td>
+                                @cliente.Domicilio
+                            </td>
+                            <td>
+                                <a class="btn btn-warning btn-sm" href="/states/edit/@cliente.Id">Editar</a>
+                                <a class="btn btn-info btn-sm" href="/states/details/@cliente.Id">Detalles</a>
+                                <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(cliente))>Borrar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </Body>
+    </GenericList>
+}

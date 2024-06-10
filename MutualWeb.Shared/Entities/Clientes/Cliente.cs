@@ -195,5 +195,14 @@ namespace MutualWeb.Shared.Entities.Clientes
         [Display(Name = "Observaciones Seguro Enfermedad")]
         [MaxLength(255, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
         public string? ObsSegEnfAcc { get; set; }
+
+        [Display(Name = "Titular")]
+        public string Titular => $"{ApellidoTitular} {NombreTitular}";
+
+        [Display(Name = "Afiliado Original")]
+        public string AfiliadoOriginal => $"{Apellido} {Nombre}";
+
+        [Display(Name = "Cónyuge")]
+        public string Conyuge => $"{ApellidoConyuge} {NombreConyuge}";
     }
 }

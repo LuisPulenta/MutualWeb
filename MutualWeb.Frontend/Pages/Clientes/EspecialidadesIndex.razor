@@ -8,6 +8,16 @@
     <a class="btn btn-sm btn-outline-primary" href="/especialidades/create">Nueva Especialidad</a>
 </div>
 
+<div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
+    <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar Especialidad..." @bind-value="Filter" />
+    <button type="button" class="btn btn-sm btn-outline-primary mx-1" @onclick="ApplyFilterAsync">Filtrar</button>
+    <button type="button" class="btn btn-sm btn-outline-danger" @onclick="CleanFilterAsync">Limpiar</button>
+</div>
+
+<Pagination CurrentPage="currentPage"
+            TotalPages="totalPages"
+            SelectedPage="SelectedPageAsync" />
+
 <GenericList MyList="Especialidades">
     <Body>
         <table class="table table-striped">
@@ -15,8 +25,9 @@
                 <tr>
                     <th>Id</th>
                     <th>Especialidad</th>
-                    <th>Clientes</th>
-                    <th></th>
+                    <th style="width:210px">Clientes</th>
+                    <th style="width:210px"></th>
+
                 </tr>
             </thead>
             <tbody>
@@ -27,8 +38,9 @@
                         <td>@especialidad.Nombre</td>
                         <td>@especialidad.ClientesNumber</td>
                         <td>
-                            <a href="/especialidades/edit/@especialidad.Id" class="btn btn-warning">Editar</a>
-                            <button class="btn btn-danger" @onclick=@(() => DeleteAsync(especialidad))>Borrar</button>
+                            <a href="/especialidades/edit/@especialidad.Id" class="btn btn-sm btn-warning">Editar</a>
+                            <a class="btn btn-sm btn-info btn-sm" href="/especialidades/details/@especialidad.Id">Detalles</a>
+                            <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(especialidad))>Borrar</button>
                         </td>
                     </tr>
                 }

@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MutualWeb.Backend.UnitsOfWork.Implementations;
 using MutualWeb.Backend.UnitsOfWork.Interfaces;
+using MutualWeb.Shared.DTOs;
 using MutualWeb.Shared.Entities.Clientes;
 
 namespace MutualWeb.Backend.Controllers
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class TiposClientesController : GenericController<TipoCliente>
     {
@@ -18,10 +20,11 @@ namespace MutualWeb.Backend.Controllers
             _tiposClientesUnitOfWork = tiposClientesUnitOfWork;
         }
 
+        //--------------------------------------------------------------------------------------------
         [HttpGet]
-        public override async Task<IActionResult> GetAsync()
+        public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
         {
-            var response = await _tiposClientesUnitOfWork.GetAsync();
+            var response = await _tiposClientesUnitOfWork.GetAsync(pagination);
             if (response.WasSuccess)
             {
                 return Ok(response.Result);
@@ -29,6 +32,19 @@ namespace MutualWeb.Backend.Controllers
             return BadRequest();
         }
 
+        //--------------------------------------------------------------------------------------------
+        [HttpGet("totalPages")]
+        public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
+        {
+            var action = await _tiposClientesUnitOfWork.GetTotalPagesAsync(pagination);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+
+        //--------------------------------------------------------------------------------------------
         [HttpGet("{id}")]
         public override async Task<IActionResult> GetAsync(int id)
         {
@@ -39,6 +55,5 @@ namespace MutualWeb.Backend.Controllers
             }
             return NotFound(response.Message);
         }
-
     }
 }

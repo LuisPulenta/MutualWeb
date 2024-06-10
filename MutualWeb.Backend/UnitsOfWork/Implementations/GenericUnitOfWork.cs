@@ -1,5 +1,6 @@
 ﻿using MutualWeb.Backend.Repositories.Interfaces;
 using MutualWeb.Backend.UnitsOfWork.Interfaces;
+using MutualWeb.Shared.DTOs;
 using MutualWeb.Shared.Responses;
 
 namespace MutualWeb.Backend.UnitsOfWork.Implementations
@@ -17,7 +18,9 @@ namespace MutualWeb.Backend.UnitsOfWork.Implementations
 
         public virtual async Task<ActionResponse<T>> DeleteAsync(int id) => await _repository.DeleteAsync(id);
 
-        public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync() => await _repository.GetAsync();
+        public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination) => await _repository.GetAsync(pagination);
+
+        public virtual async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination) => await _repository.GetTotalPagesAsync(pagination);
 
         public virtual async Task<ActionResponse<T>> GetAsync(int id) => await _repository.GetAsync(id);
 

@@ -19,7 +19,7 @@ namespace MutualWeb.Frontend.AuthenticationProviders
             authenticationType: "test");
 
 
-            return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(user)));
+            return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(admin)));
         }
     }
 }

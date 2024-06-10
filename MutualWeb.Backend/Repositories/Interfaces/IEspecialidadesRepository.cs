@@ -1,4 +1,5 @@
-﻿using MutualWeb.Shared.Entities.Clientes;
+﻿using MutualWeb.Shared.DTOs;
+using MutualWeb.Shared.Entities.Clientes;
 using MutualWeb.Shared.Responses;
 
 namespace MutualWeb.Backend.Repositories.Interfaces
@@ -6,7 +7,9 @@ namespace MutualWeb.Backend.Repositories.Interfaces
     public interface IEspecialidadesRepository
     {
         Task<ActionResponse<Especialidad>> GetAsync(int id);
+        
+        Task<ActionResponse<IEnumerable<Especialidad>>> GetAsync(PaginationDTO pagination);
 
-        Task<ActionResponse<IEnumerable<Especialidad>>> GetAsync();
+        Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
     }
 }
