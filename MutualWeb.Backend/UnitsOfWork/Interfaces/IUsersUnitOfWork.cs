@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MutualWeb.Shared.DTOs;
 using MutualWeb.Shared.Entities;
 
 namespace MutualWeb.Backend.UnitsOfWork.Interfaces
@@ -14,5 +15,9 @@ namespace MutualWeb.Backend.UnitsOfWork.Interfaces
         Task AddUserToRoleAsync(User user, string roleName);
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
+
+        Task<SignInResult> LoginAsync(LoginDTO model);
+
+        Task LogoutAsync();
     }
 }
