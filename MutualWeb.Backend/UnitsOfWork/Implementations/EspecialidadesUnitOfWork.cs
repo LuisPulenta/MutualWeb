@@ -7,16 +7,16 @@ namespace MutualWeb.Backend.UnitsOfWork.Implementations
 {
     public class EspecialidadesUnitOfWork : GenericUnitOfWork<Especialidad>, IEspecialidadesUnitOfWork
     {
-        private readonly IEspecialidadesRepository _countriesRepository;
+        private readonly IEspecialidadesRepository _especialidadesRepository;
 
-        public EspecialidadesUnitOfWork(IGenericRepository<Especialidad> repository, IEspecialidadesRepository countriesRepository) : base(repository)
+        public EspecialidadesUnitOfWork(IGenericRepository<Especialidad> repository, IEspecialidadesRepository especialidadesRepository) : base(repository)
         {
-            _countriesRepository = countriesRepository;
+            _especialidadesRepository = especialidadesRepository;
         }
 
-        public override async Task<ActionResponse<IEnumerable<Especialidad>>> GetAsync() => await _countriesRepository.GetAsync();
+        public override async Task<ActionResponse<IEnumerable<Especialidad>>> GetAsync() => await _especialidadesRepository.GetAsync();
 
-        public override async Task<ActionResponse<Especialidad>> GetAsync(int id) => await _countriesRepository.GetAsync(id);
+        public override async Task<ActionResponse<Especialidad>> GetAsync(int id) => await _especialidadesRepository.GetAsync(id);
     }
 }
 
