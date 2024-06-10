@@ -31,11 +31,10 @@ namespace MutualWeb.Shared.Entities.Clientes
 
         [MaxLength(1, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public string Sexo { get; set; } = null!;
+        public string? Sexo { get; set; } = null!;
 
         [Display(Name = "Fecha de Nacimiento")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public DateOnly FechaNacimiento { get; set; }
+        public DateOnly? FechaNacimiento { get; set; }
 
         [Display(Name = "Fecha de Fallecimiento")]
         public DateOnly? FechaFallecimiento { get; set; }
@@ -61,7 +60,7 @@ namespace MutualWeb.Shared.Entities.Clientes
         [MaxLength(25, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
         public string? Localidad { get; set; }
 
-        public int CP { get; set; }
+        public int? CP { get; set; }
 
         [Display(Name = "Teléfono")]
         [MaxLength(20, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
@@ -76,15 +75,15 @@ namespace MutualWeb.Shared.Entities.Clientes
         [Display(Name = "Apellido Cónyuge")]
         [MaxLength(25, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public string ApellidoConyuge { get; set; } = null!;
+        public string? ApellidoConyuge { get; set; } = null!;
 
         [Display(Name = "Nombre Cónyuge")]
         [MaxLength(30, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public string NombreConyuge { get; set; } = null!;
+        public string? NombreConyuge { get; set; } = null!;
 
         [Display(Name = "DNI Cónyuge")]
-        public int DNIConyuge { get; set; }
+        public int? DNIConyuge { get; set; }
 
         [Display(Name = "CUIL Cónyuge")]
         public string? CUILConyuge { get; set; }
@@ -100,12 +99,12 @@ namespace MutualWeb.Shared.Entities.Clientes
 
         public bool Socio { get; set; }
 
-        [Display(Name = "Fecha de Alta")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public DateOnly FechaAlta { get; set; }
-
         [Display(Name = "Fecha de Carga")]
         public DateOnly? FechaCarga { get; set; }
+
+        [Display(Name = "Fecha de Alta")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        public DateOnly? FechaAlta { get; set; }
 
         [Display(Name = "Fecha de Baja")]
         public DateOnly? FechaBaja { get; set; }

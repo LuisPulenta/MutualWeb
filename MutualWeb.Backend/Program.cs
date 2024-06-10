@@ -30,6 +30,9 @@ builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
 builder.Services.AddScoped<IEspecialidadesRepository, EspecialidadesRepository>();
 builder.Services.AddScoped<IEspecialidadesUnitOfWork, EspecialidadesUnitOfWork>();
 
+builder.Services.AddScoped<ITiposClientesRepository, TiposClientesRepository>();
+builder.Services.AddScoped<ITiposClientesUnitOfWork, TiposClientesUnitOfWork>();
+
 
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {

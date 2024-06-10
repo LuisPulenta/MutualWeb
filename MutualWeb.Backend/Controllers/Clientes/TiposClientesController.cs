@@ -2,7 +2,6 @@
 using MutualWeb.Backend.UnitsOfWork.Interfaces;
 using MutualWeb.Shared.Entities.Clientes;
 
-
 namespace MutualWeb.Backend.Controllers
 {
     [ApiController]

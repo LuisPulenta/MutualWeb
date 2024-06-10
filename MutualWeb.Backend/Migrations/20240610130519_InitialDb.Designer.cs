@@ -12,7 +12,7 @@ using MutualWeb.Backend.Data;
 namespace MutualWeb.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240609212906_InitialDb")]
+    [Migration("20240610130519_InitialDb")]
     partial class InitialDb
     {
         /// <inheritdoc />
@@ -194,7 +194,7 @@ namespace MutualWeb.Backend.Migrations
                     b.Property<bool?>("Beneficio1")
                         .HasColumnType("bit");
 
-                    b.Property<int>("CP")
+                    b.Property<int?>("CP")
                         .HasColumnType("int");
 
                     b.Property<string>("CUIL")
@@ -210,7 +210,7 @@ namespace MutualWeb.Backend.Migrations
                     b.Property<int>("DNI")
                         .HasColumnType("int");
 
-                    b.Property<int>("DNIConyuge")
+                    b.Property<int?>("DNIConyuge")
                         .HasColumnType("int");
 
                     b.Property<string>("Domicilio")
@@ -247,7 +247,8 @@ namespace MutualWeb.Backend.Migrations
                     b.Property<DateOnly?>("FecPagoSepTitular")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly>("FechaAlta")
+                    b.Property<DateOnly?>("FechaAlta")
+                        .IsRequired()
                         .HasColumnType("date");
 
                     b.Property<DateOnly?>("FechaBaja")
@@ -265,7 +266,7 @@ namespace MutualWeb.Backend.Migrations
                     b.Property<DateOnly?>("FechaJubilacion")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly>("FechaNacimiento")
+                    b.Property<DateOnly?>("FechaNacimiento")
                         .HasColumnType("date");
 
                     b.Property<DateOnly?>("FechaNacimientoConyuge")
