@@ -1,4 +1,5 @@
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using MutualWeb.Frontend.Repositories;
 using MutualWeb.Shared.Entities.Clientes;
@@ -6,6 +7,7 @@ using System.Net;
 
 namespace MutualWeb.Frontend.Pages.Clientes
 {
+    [Authorize(Roles = "Admin")]
     public partial class TipoClienteEdit
     {
         private TipoCliente? tipoCliente;

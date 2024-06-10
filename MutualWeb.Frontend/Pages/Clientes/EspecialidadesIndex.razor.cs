@@ -1,10 +1,12 @@
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using MutualWeb.Frontend.Repositories;
 using MutualWeb.Shared.Entities.Clientes;
 
 namespace MutualWeb.Frontend.Pages.Clientes
 {
+    [Authorize(Roles = "Admin")]
     public partial class EspecialidadesIndex
     {
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
