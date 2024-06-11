@@ -47,6 +47,7 @@ namespace MutualWeb.Backend.Data
                     UserName = email,
                     PhoneNumber = phone,
                     UserType = userType,
+                    IsActive=true,
                 };
 
                 await _usersUnitOfWork.AddUserAsync(user, "123456");

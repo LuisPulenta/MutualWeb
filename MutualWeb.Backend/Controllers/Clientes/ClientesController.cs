@@ -12,11 +12,11 @@ namespace MutualWeb.Backend.Controllers
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class TiposClientesController : ControllerBase
+    public class ClientesController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public TiposClientesController(DataContext context)
+        public ClientesController(DataContext context)
         {
             _context = context;
         }
@@ -25,16 +25,22 @@ namespace MutualWeb.Backend.Controllers
         [HttpGet]
         public async Task<ActionResult> Get([FromQuery] PaginationDTO pagination)
         {
-            var queryable = _context.TipoClientes
+            var queryable = _context.Clientes
+                .Include(x => x.Especialidad)
+                .Include(x => x.TipoCliente)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
             {
-                queryable = queryable.Where(x => x.DescripcionTipoCliente.ToLower().Contains(pagination.Filter.ToLower()));
-            }
+                queryable = queryable.Where(x => x.ApellidoTitular.ToLower().Contains(pagination.Filter.ToLower())
+                || x.NombreTitular.ToLower().Contains(pagination.Filter.ToLower())
+                || x.Especialidad!.Nombre.ToLower().Contains(pagination.Filter.ToLower())
+                || x.TipoCliente!.DescripcionTipoCliente.ToLower().Contains(pagination.Filter.ToLower())
+                );
+            }           
 
-            return Ok(await queryable
-                .OrderBy(x => x.DescripcionTipoCliente)
+            return Ok(await queryable                
+                .OrderBy(x => x.ApellidoTitular)
                 .Paginate(pagination)
                 .ToListAsync());
         }
@@ -43,12 +49,12 @@ namespace MutualWeb.Backend.Controllers
         [HttpGet("totalPages")]
         public async Task<ActionResult> GetPages([FromQuery] PaginationDTO pagination)
         {
-            var queryable = _context.TipoClientes
+            var queryable = _context.Clientes
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
             {
-                queryable = queryable.Where(x => x.DescripcionTipoCliente.ToLower().Contains(pagination.Filter.ToLower()));
+                queryable = queryable.Where(x => x.Nombre.ToLower().Contains(pagination.Filter.ToLower()));
             }
 
             double count = await queryable.CountAsync();
@@ -60,7 +66,7 @@ namespace MutualWeb.Backend.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult> Get(int id)
         {
-            var category = await _context.TipoClientes
+            var category = await _context.Clientes
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (category is null)
             {
@@ -72,13 +78,13 @@ namespace MutualWeb.Backend.Controllers
 
         //--------------------------------------------------------------------------------------------
         [HttpPost]
-        public async Task<ActionResult> Post(TipoCliente tipocliente)
+        public async Task<ActionResult> Post(Cliente cliente)
         {
-            _context.Add(tipocliente);
+            _context.Add(cliente);
             try
             {
                 await _context.SaveChangesAsync();
-                return Ok(tipocliente);
+                return Ok(cliente);
             }
             catch (DbUpdateException dbUpdateException)
             {
@@ -99,13 +105,13 @@ namespace MutualWeb.Backend.Controllers
 
         //--------------------------------------------------------------------------------------------
         [HttpPut]
-        public async Task<ActionResult> Put(TipoCliente tipocliente)
+        public async Task<ActionResult> Put(Cliente cliente)
         {
-            _context.Update(tipocliente);
+            _context.Update(cliente);
             try
             {
                 await _context.SaveChangesAsync();
-                return Ok(tipocliente);
+                return Ok(cliente);
             }
             catch (DbUpdateException dbUpdateException)
             {
@@ -128,13 +134,13 @@ namespace MutualWeb.Backend.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var tipocliente = await _context.TipoClientes.FirstOrDefaultAsync(x => x.Id == id);
-            if (tipocliente == null)
+            var cliente = await _context.Clientes.FirstOrDefaultAsync(x => x.Id == id);
+            if (cliente == null)
             {
                 return NotFound();
             }
 
-            _context.Remove(tipocliente);
+            _context.Remove(cliente);
             await _context.SaveChangesAsync();
             return NoContent();
         }

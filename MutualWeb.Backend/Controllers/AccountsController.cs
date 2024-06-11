@@ -12,7 +12,6 @@ using MutualWeb.Shared.Entities;
 namespace MutualWeb.Backend.Controllers
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class AccountsController : ControllerBase
     {
@@ -30,6 +29,7 @@ namespace MutualWeb.Backend.Controllers
         public async Task<IActionResult> CreateUser([FromBody] UserDTO model)
         {
             User user = model;
+            user.IsActive = true;
             var result = await _usersUnitOfWork.AddUserAsync(user, model.Password);
             if (result.Succeeded)
             {
@@ -48,9 +48,13 @@ namespace MutualWeb.Backend.Controllers
             if (result.Succeeded)
             {
                 var user = await _usersUnitOfWork.GetUserAsync(model.Email);
+
+                if (!user.IsActive)
+                {
+                    return BadRequest("Usuario no activo.");
+                }
                 return Ok(BuildToken(user));
             }
-
             return BadRequest("Email o contraseña incorrectos.");
         }
 

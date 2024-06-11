@@ -1,58 +1,142 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MutualWeb.Backend.UnitsOfWork.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using MutualWeb.Backend.Data;
+using MutualWeb.Backend.Helpers;
 using MutualWeb.Shared.DTOs;
 using MutualWeb.Shared.Entities.Clientes;
 
 namespace MutualWeb.Backend.Controllers
 {
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class EspecialidadesController : GenericController<Especialidad>
+    public class EspecialidadesController : ControllerBase
     {
-        private readonly IEspecialidadesUnitOfWork _especialidadesUnitOfWork;
+        private readonly DataContext _context;
 
-        public EspecialidadesController(IGenericUnitOfWork<Especialidad> unit, IEspecialidadesUnitOfWork especialidadesUnitOfWork) : base(unit)
+        public EspecialidadesController(DataContext context)
         {
-            _especialidadesUnitOfWork = especialidadesUnitOfWork;
+            _context = context;
         }
 
         //--------------------------------------------------------------------------------------------
         [HttpGet]
-        public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
+        public async Task<ActionResult> Get([FromQuery] PaginationDTO pagination)
         {
-            var response = await _especialidadesUnitOfWork.GetAsync(pagination);
-            if (response.WasSuccess)
+            var queryable = _context.Especialidades
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
             {
-                return Ok(response.Result);
+                queryable = queryable.Where(x => x.Nombre.ToLower().Contains(pagination.Filter.ToLower()));
             }
-            return BadRequest();
+
+            return Ok(await queryable
+                .OrderBy(x => x.Nombre)
+                .Paginate(pagination)
+                .ToListAsync());
         }
 
         //--------------------------------------------------------------------------------------------
         [HttpGet("totalPages")]
-        public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
+        public async Task<ActionResult> GetPages([FromQuery] PaginationDTO pagination)
         {
-            var action = await _especialidadesUnitOfWork.GetTotalPagesAsync(pagination);
-            if (action.WasSuccess)
+            var queryable = _context.Especialidades
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
             {
-                return Ok(action.Result);
+                queryable = queryable.Where(x => x.Nombre.ToLower().Contains(pagination.Filter.ToLower()));
             }
-            return BadRequest();
+
+            double count = await queryable.CountAsync();
+            double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
+            return Ok(totalPages);
         }
 
         //--------------------------------------------------------------------------------------------
-        [HttpGet("{id}")]
-        public override async Task<IActionResult> GetAsync(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> Get(int id)
         {
-            var response = await _especialidadesUnitOfWork.GetAsync(id);
-            if (response.WasSuccess)
+            var category = await _context.Especialidades
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (category is null)
             {
-                return Ok(response.Result);
+                return NotFound();
             }
-            return NotFound(response.Message);
+
+            return Ok(category);
+        }
+
+        //--------------------------------------------------------------------------------------------
+        [HttpPost]
+        public async Task<ActionResult> Post(Especialidad especialidad)
+        {
+            _context.Add(especialidad);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(especialidad);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+                {
+                    return BadRequest("Ya existe un registro con el mismo nombre.");
+                }
+                else
+                {
+                    return BadRequest(dbUpdateException.InnerException.Message);
+                }
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
+        //--------------------------------------------------------------------------------------------
+        [HttpPut]
+        public async Task<ActionResult> Put(Especialidad especialidad)
+        {
+            _context.Update(especialidad);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(especialidad);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+                {
+                    return BadRequest("Ya existe un registro con el mismo nombre.");
+                }
+                else
+                {
+                    return BadRequest(dbUpdateException.InnerException.Message);
+                }
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
+        //--------------------------------------------------------------------------------------------
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var especialidad = await _context.Especialidades.FirstOrDefaultAsync(x => x.Id == id);
+            if (especialidad == null)
+            {
+                return NotFound();
+            }
+
+            _context.Remove(especialidad);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

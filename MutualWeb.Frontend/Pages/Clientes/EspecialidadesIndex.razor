@@ -25,7 +25,6 @@
                 <tr>
                     <th>Id</th>
                     <th>Especialidad</th>
-                    <th style="width:210px">Clientes</th>
                     <th style="width:210px"></th>
 
                 </tr>
@@ -36,10 +35,8 @@
                     <tr>
                         <td>@especialidad.Id</td>
                         <td>@especialidad.Nombre</td>
-                        <td>@especialidad.ClientesNumber</td>
                         <td>
                             <a href="/especialidades/edit/@especialidad.Id" class="btn btn-sm btn-warning">Editar</a>
-                            <a class="btn btn-sm btn-info btn-sm" href="/especialidades/details/@especialidad.Id">Detalles</a>
                             <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(especialidad))>Borrar</button>
                         </td>
                     </tr>
