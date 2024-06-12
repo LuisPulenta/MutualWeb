@@ -12,7 +12,7 @@ using MutualWeb.Backend.Data;
 namespace MutualWeb.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240610130519_InitialDb")]
+    [Migration("20240612140603_InitialDb")]
     partial class InitialDb
     {
         /// <inheritdoc />
@@ -353,7 +353,7 @@ namespace MutualWeb.Backend.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("TipoClienteId")
+                    b.Property<int?>("TipoClienteId")
                         .HasColumnType("int");
 
                     b.Property<string>("TipoJubilacion")
@@ -562,9 +562,7 @@ namespace MutualWeb.Backend.Migrations
 
                     b.HasOne("MutualWeb.Shared.Entities.Clientes.TipoCliente", "TipoCliente")
                         .WithMany("Clientes")
-                        .HasForeignKey("TipoClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TipoClienteId");
 
                     b.Navigation("Especialidad");
 

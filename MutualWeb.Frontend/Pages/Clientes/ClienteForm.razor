@@ -1,0 +1,56 @@
+﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>Apellido:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Cliente.Apellido" />
+            <ValidationMessage For="@(() => Cliente.Apellido)" />
+        </div>
+        <label>Nombre:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Cliente.Nombre" />
+            <ValidationMessage For="@(() => Cliente.Nombre)" />
+        </div>
+         
+        <div class="mb-3">
+            <label>Especialidad:</label>
+            <div>
+                <select class="form-select" @bind ="Cliente.EspecialidadId">
+                    <option value=0>-- Seleccione una Especialidad --</option>
+                    @if (Especialidades is not null)
+                    {
+                        @foreach (var especialidad in Especialidades)
+                        {
+                            <option value="@especialidad.Id">@especialidad.Nombre</option>
+                        }
+                    }
+                </select>
+                <ValidationMessage For="@(() => Cliente.EspecialidadId)" />
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>Tipo de Cliente:</label>
+            <div>
+                <select class="form-select" @bind="Cliente.TipoClienteId">
+                    <option value=0>-- Seleccione un Tipo de Cliente --</option>
+                    @if (Especialidades is not null)
+                    {
+                        @foreach (var tipoCliente in TiposClientes)
+                        {
+                            <option value="@tipoCliente.Id">@tipoCliente.DescripcionTipoCliente</option>
+                        }
+                    }
+                </select>
+                <ValidationMessage For="@(() => Cliente.TipoClienteId)" />
+            </div>
+        </div>
+
+
+    </div>
+
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+</EditForm>

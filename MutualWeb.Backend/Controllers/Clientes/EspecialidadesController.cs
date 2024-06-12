@@ -6,6 +6,7 @@ using MutualWeb.Backend.Data;
 using MutualWeb.Backend.Helpers;
 using MutualWeb.Shared.DTOs;
 using MutualWeb.Shared.Entities.Clientes;
+using System.Diagnostics.Metrics;
 
 namespace MutualWeb.Backend.Controllers
 {
@@ -137,6 +138,17 @@ namespace MutualWeb.Backend.Controllers
             _context.Remove(especialidad);
             await _context.SaveChangesAsync();
             return NoContent();
+        }
+
+        //--------------------------------------------------------------------------------------------
+
+        [AllowAnonymous]
+        [HttpGet("combo")]
+        public async Task<IEnumerable<Especialidad>> GetComboAsync()
+        {
+            return await _context.Especialidades
+                .OrderBy(c => c.Nombre)
+                .ToListAsync();
         }
     }
 }

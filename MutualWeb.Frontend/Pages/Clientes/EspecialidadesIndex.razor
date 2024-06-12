@@ -2,48 +2,65 @@
 
 @inject IRepository repository
 
-<h3>Especialidades</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <div class="card-header">
+                    <span>
+                        <i class="bi bi-globe-americas"></i> Especialidades
 
-<div class="mb-3">
-    <a class="btn btn-sm btn-outline-primary" href="/especialidades/create">Nueva Especialidad</a>
+                        <a class="btn btn-sm btn-outline-primary float-end" href="/especialidades/create"><i class="bi bi-plus-square"></i> Nueva Especialidad</a>
+                    </span>
+                </div>
+                <div class="card-body">
+
+
+                    <div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
+                        <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar Especialidad..." @bind-value="Filter" />
+                        <button type="button" class="btn btn-sm btn-outline-primary mx-1" @onclick="ApplyFilterAsync"><i class="bi bi-funnel" /> Filtrar</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" @onclick="CleanFilterAsync"><i class="bi bi-x-circle" /> Limpiar</button>
+
+                    </div>
+
+                    <Pagination CurrentPage="currentPage"
+                                TotalPages="totalPages"
+                                SelectedPage="SelectedPageAsync" />
+
+                    <GenericList MyList="Especialidades">
+                        <Body>
+                            <table class="table table-sm table-info table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Especialidad</th>
+                                        <th style="width:210px"></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var especialidad in Especialidades!)
+                                    {
+                                        <tr>
+                                            <td>@especialidad.Id</td>
+                                            <td>@especialidad.Nombre</td>
+                                            <td>
+                                                <a href="/especialidades/edit/@especialidad.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil"/> Editar</a>
+                                                <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(especialidad))><i class="bi bi-trash" /> Borrar</button>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </Body>
+                    </GenericList>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
 </div>
 
-<div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
-    <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar Especialidad..." @bind-value="Filter" />
-    <button type="button" class="btn btn-sm btn-outline-primary mx-1" @onclick="ApplyFilterAsync">Filtrar</button>
-    <button type="button" class="btn btn-sm btn-outline-danger" @onclick="CleanFilterAsync">Limpiar</button>
-</div>
-
-<Pagination CurrentPage="currentPage"
-            TotalPages="totalPages"
-            SelectedPage="SelectedPageAsync" />
-
-<GenericList MyList="Especialidades">
-    <Body>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Especialidad</th>
-                    <th style="width:210px"></th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var especialidad in Especialidades!)
-                {
-                    <tr>
-                        <td>@especialidad.Id</td>
-                        <td>@especialidad.Nombre</td>
-                        <td>
-                            <a href="/especialidades/edit/@especialidad.Id" class="btn btn-sm btn-warning">Editar</a>
-                            <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(especialidad))>Borrar</button>
-                        </td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
-    </Body>
-</GenericList>
 

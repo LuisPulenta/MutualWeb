@@ -218,7 +218,7 @@ namespace MutualWeb.Backend.Migrations
                     CUILConyuge = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FechaNacimientoConyuge = table.Column<DateOnly>(type: "date", nullable: true),
                     FechaFallecimientoConyuge = table.Column<DateOnly>(type: "date", nullable: true),
-                    TipoClienteId = table.Column<int>(type: "int", nullable: false),
+                    TipoClienteId = table.Column<int>(type: "int", nullable: true),
                     Socio = table.Column<bool>(type: "bit", nullable: false),
                     FechaCarga = table.Column<DateOnly>(type: "date", nullable: true),
                     FechaAlta = table.Column<DateOnly>(type: "date", nullable: false),
@@ -262,8 +262,7 @@ namespace MutualWeb.Backend.Migrations
                         name: "FK_Clientes_TipoClientes_TipoClienteId",
                         column: x => x.TipoClienteId,
                         principalTable: "TipoClientes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

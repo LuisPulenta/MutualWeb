@@ -20,19 +20,21 @@
 
 <GenericList MyList="Clientes">
     <Body>
-        <table class="table table-striped">
+        <table class="table table-sm table-info table-striped">
             <thead>
                 <tr>
                     <th>Id</th>
+                    <th>Titular</th>
+                    <th>Cliente</th>
                     <th>Tipo Cliente</th>
                     <th>Especialidad</th>
-                    <th>Cliente</th>
                     <th>DNI</th>
                     <th>Domicilio</th>
                     <th>Barrio</th>
                     <th>Localidad</th>
                     <th>Teléfono</th>
                     <th>Celular</th>
+                    <th>Fecha Nacim.</th>
                     <th>Socio</th>
                     <th style="width:210px"></th>
 
@@ -43,6 +45,8 @@
                 {
                     <tr>
                         <td>@cliente.Id</td>
+                        <td>@cliente.Titular</td>
+                        <td>@cliente.AfiliadoOriginal</td>
                         <td>@cliente.TipoCliente!.DescripcionTipoCliente</td>
                         @if (@cliente.Especialidad != null)
                         {
@@ -54,13 +58,13 @@
                             {
                             <td>Sin especialidad</td>
                             }
-                        <td>@cliente.Titular</td>
                         <td>@cliente.DNI</td>
                         <td>@cliente.Domicilio</td>
                         <td>@cliente.Barrio</td>
                         <td>@cliente.Localidad</td>
                         <td>@cliente.Telefono</td>
                         <td>@cliente.Celular</td>
+                        <td>@cliente.FechaNacimiento</td>
                         <td>@cliente.Socio</td>
                         <td>
                             <a href="/clientees/edit/@cliente.Id" class="btn btn-sm btn-warning">Editar</a>
@@ -74,4 +78,5 @@
         </table>
     </Body>
 </GenericList>
+
 

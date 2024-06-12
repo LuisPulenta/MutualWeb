@@ -138,5 +138,15 @@ namespace MutualWeb.Backend.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
+        //--------------------------------------------------------------------------------------------
+        [AllowAnonymous]
+        [HttpGet("combo")]
+        public async Task<IEnumerable<TipoCliente>> GetComboAsync()
+        {
+            return await _context.TipoClientes
+                .OrderBy(c => c.DescripcionTipoCliente)
+                .ToListAsync();
+        }
     }
 }

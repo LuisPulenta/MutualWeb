@@ -350,7 +350,7 @@ namespace MutualWeb.Backend.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("TipoClienteId")
+                    b.Property<int?>("TipoClienteId")
                         .HasColumnType("int");
 
                     b.Property<string>("TipoJubilacion")
@@ -559,9 +559,7 @@ namespace MutualWeb.Backend.Migrations
 
                     b.HasOne("MutualWeb.Shared.Entities.Clientes.TipoCliente", "TipoCliente")
                         .WithMany("Clientes")
-                        .HasForeignKey("TipoClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TipoClienteId");
 
                     b.Navigation("Especialidad");
 

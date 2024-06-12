@@ -97,6 +97,10 @@ namespace MutualWeb.Shared.Entities.Clientes
         [Display(Name = "Tipo de Cliente")]
         public TipoCliente TipoCliente { get; set; } = null!;
 
+        [Display(Name = "Tipo de Cliente")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un {0}.")]
+        public int? TipoClienteId { get; set; }
+
         public bool Socio { get; set; }
 
         [Display(Name = "Fecha de Carga")]
@@ -131,7 +135,8 @@ namespace MutualWeb.Shared.Entities.Clientes
         [Display(Name = "Especialidad")]
         public Especialidad? Especialidad { get; set; }
 
-        [Display(Name = "Especialidad Id")]
+        [Display(Name = "Especialidad")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar una {0}.")]
         public int? EspecialidadId { get; set; }
 
         [Display(Name = "Af. Seguro Titular")]
