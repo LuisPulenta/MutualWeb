@@ -82,7 +82,7 @@ namespace MutualWeb.Backend.Controllers
             }
             catch (DbUpdateException dbUpdateException)
             {
-                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+                if (dbUpdateException.InnerException!.Message.Contains("duplica"))
                 {
                     return BadRequest("Ya existe un registro con el mismo nombre.");
                 }
@@ -109,7 +109,7 @@ namespace MutualWeb.Backend.Controllers
             }
             catch (DbUpdateException dbUpdateException)
             {
-                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+                if (dbUpdateException.InnerException!.Message.Contains("duplica"))
                 {
                     return BadRequest("Ya existe un registro con el mismo nombre.");
                 }

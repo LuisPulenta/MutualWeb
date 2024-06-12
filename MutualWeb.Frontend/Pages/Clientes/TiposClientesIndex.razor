@@ -2,49 +2,63 @@
 
 @inject IRepository repository
 
-<h3>Tipos de Clientes</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <div class="card-header">
+                    <span>
+                        <i class="bi bi-tag-fill"></i> Tipos de Clientes
 
-<div class="mb-3">
-    <a class="btn btn-sm btn-sm btn-outline-primary" href="/tiposclientes/create">Nuevo Tipo de Cliente</a>
+                        <a class="btn btn-sm btn-outline-primary float-end" href="/tiposclientes/create"><i class="bi bi-plus-square"></i> Nuevo Tipo de Cliente</a>
+                    </span>
+                </div>
+                <div class="card-body">
+
+
+                    <div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
+                        <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar Tipo de Cliente..." @bind-value="Filter" />
+                        <button type="button" class="btn btn-sm btn-outline-primary mx-1" @onclick="ApplyFilterAsync"><i class="bi bi-funnel" /> Filtrar</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" @onclick="CleanFilterAsync"><i class="bi bi-x-circle" /> Limpiar</button>
+                    </div>
+
+                    <Pagination CurrentPage="currentPage"
+                                TotalPages="totalPages"
+                                SelectedPage="SelectedPageAsync" />
+
+
+                    <GenericList MyList="TiposClientes">
+                        <Body>
+                            <table class="table table-sm table-info table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Tipo de Cliente</th>
+                                        <th>Cliente Inae</th>
+                                        <th style="width:160px"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var tipoCliente in TiposClientes!)
+                                    {
+                                        <tr>
+                                            <td>@tipoCliente.Id</td>
+                                            <td>@tipoCliente.DescripcionTipoCliente</td>
+                                            <td>@tipoCliente.ClienteInae</td>
+                                            <td>
+                                                <a href="/tiposclientes/edit/@tipoCliente.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil" /> Editar</a>
+                                                <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(tipoCliente))><i class="bi bi-trash" /> Borrar</button>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </Body>
+                    </GenericList>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
-    <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar Tipo de Cliente..." @bind-value="Filter" />
-    <button type="button" class="btn btn-sm btn-outline-primary mx-1" @onclick="ApplyFilterAsync">Filtrar</button>
-    <button type="button" class="btn btn-sm btn-outline-danger" @onclick="CleanFilterAsync">Limpiar</button>
-</div>
-
-<Pagination CurrentPage="currentPage"
-            TotalPages="totalPages"
-            SelectedPage="SelectedPageAsync" />
-
-
-<GenericList MyList="TiposClientes">
-    <Body>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Tipo de Cliente</th>
-                    <th>Cliente Inae</th>
-                    <th style="width:210px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var tipoCliente in TiposClientes!)
-                {
-                    <tr>
-                        <td>@tipoCliente.Id</td>
-                        <td>@tipoCliente.DescripcionTipoCliente</td>
-                        <td>@tipoCliente.ClienteInae</td>
-                        <td>
-                            <a href="/tiposclientes/edit/@tipoCliente.Id" class="btn btn-sm btn-warning">Editar</a>
-                            <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(tipoCliente))>Borrar</button>
-                        </td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
-    </Body>
-</GenericList>

@@ -2,81 +2,95 @@
 
 @inject IRepository repository
 
-<h3>Clientes</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <span>
+                        <i class="bi bi-people-fill"></i> Clientes
 
-<div class="mb-3">
-    <a class="btn btn-sm btn-outline-primary" href="/clientes/create">Nuevo Cliente</a>
+                        <a class="btn btn-sm btn-outline-primary float-end" href="/clientes/create"><i class="bi bi-plus-square"></i> Nuevo Cliente</a>
+                    </span>
+                </div>
+                <div class="card-body">
+
+
+                    <div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
+                        <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar Cliente..." @bind-value="Filter" />
+                        <button type="button" class="btn btn-sm btn-outline-primary mx-1" @onclick="ApplyFilterAsync"><i class="bi bi-funnel" /> Filtrar</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" @onclick="CleanFilterAsync"><i class="bi bi-x-circle" /> Limpiar</button>
+                    </div>
+
+                    <Pagination CurrentPage="currentPage"
+                                TotalPages="totalPages"
+                                SelectedPage="SelectedPageAsync" />
+
+                    <GenericList MyList="Clientes">
+                        <Body>
+                            <table class="table table-sm table-info table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Titular</th>
+                                        <th>Cliente</th>
+                                        <th>Tipo Cliente</th>
+                                        <th>Especialidad</th>
+                                        <th>DNI</th>
+                                        <th>Domicilio</th>
+                                        <th>Barrio</th>
+                                        <th>Localidad</th>
+                                        <th>Teléfono</th>
+                                        <th>Celular</th>
+                                        <th>Fecha Nacim.</th>
+                                        <th>Socio</th>
+                                        <th style="width:210px"></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var cliente in Clientes!)
+                                    {
+                                        <tr>
+                                            <td>@cliente.Id</td>
+                                            <td>@cliente.Titular</td>
+                                            <td>@cliente.AfiliadoOriginal</td>
+                                            <td>@cliente.TipoCliente!.DescripcionTipoCliente</td>
+                                            @if (@cliente.Especialidad != null)
+                                            {
+                                                <td>
+                                                    @cliente.Especialidad!.Nombre
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>Sin especialidad</td>
+                                            }
+                                            <td>@cliente.DNI</td>
+                                            <td>@cliente.Domicilio</td>
+                                            <td>@cliente.Barrio</td>
+                                            <td>@cliente.Localidad</td>
+                                            <td>@cliente.Telefono</td>
+                                            <td>@cliente.Celular</td>
+                                            <td>@cliente.FechaNacimiento</td>
+                                            <td>@cliente.Socio</td>
+                                            <td>
+                                                <a href="/clientes/edit/@cliente.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil" /> Editar</a>
+                                                <a class="btn btn-sm btn-info btn-sm" href="/clientes/details/@cliente.Id"><i class="bi bi-binoculars-fill"></i> Detalles</a>
+                                                <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(cliente))><i class="bi bi-trash" /> Borrar</button>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </Body>
+                    </GenericList>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
-    <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar Cliente..." @bind-value="Filter" />
-    <button type="button" class="btn btn-sm btn-outline-primary mx-1" @onclick="ApplyFilterAsync">Filtrar</button>
-    <button type="button" class="btn btn-sm btn-outline-danger" @onclick="CleanFilterAsync">Limpiar</button>
-</div>
-
-<Pagination CurrentPage="currentPage"
-            TotalPages="totalPages"
-            SelectedPage="SelectedPageAsync" />
-
-<GenericList MyList="Clientes">
-    <Body>
-        <table class="table table-sm table-info table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Titular</th>
-                    <th>Cliente</th>
-                    <th>Tipo Cliente</th>
-                    <th>Especialidad</th>
-                    <th>DNI</th>
-                    <th>Domicilio</th>
-                    <th>Barrio</th>
-                    <th>Localidad</th>
-                    <th>Teléfono</th>
-                    <th>Celular</th>
-                    <th>Fecha Nacim.</th>
-                    <th>Socio</th>
-                    <th style="width:210px"></th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var cliente in Clientes!)
-                {
-                    <tr>
-                        <td>@cliente.Id</td>
-                        <td>@cliente.Titular</td>
-                        <td>@cliente.AfiliadoOriginal</td>
-                        <td>@cliente.TipoCliente!.DescripcionTipoCliente</td>
-                        @if (@cliente.Especialidad != null)
-                        {
-                            <td>
-                                @cliente.Especialidad!.Nombre
-                            </td>
-                        }
-                        else
-                            {
-                            <td>Sin especialidad</td>
-                            }
-                        <td>@cliente.DNI</td>
-                        <td>@cliente.Domicilio</td>
-                        <td>@cliente.Barrio</td>
-                        <td>@cliente.Localidad</td>
-                        <td>@cliente.Telefono</td>
-                        <td>@cliente.Celular</td>
-                        <td>@cliente.FechaNacimiento</td>
-                        <td>@cliente.Socio</td>
-                        <td>
-                            <a href="/clientees/edit/@cliente.Id" class="btn btn-sm btn-warning">Editar</a>
-                            <a class="btn btn-sm btn-info btn-sm" href="/clientees/details/@cliente.Id">Detalles</a>
-                            <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(cliente))>Borrar</button>
-                        </td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
-    </Body>
-</GenericList>
 
 
