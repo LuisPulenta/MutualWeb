@@ -3,62 +3,69 @@
 <EditForm Model="userDTO" OnValidSubmit="CreateUserAsync">
     <DataAnnotationsValidator />
 
-    <div class="row">
-        <div class="col-4 offset-4">
-            <h3>Registrar Nuevo Usuario</h3>
+    <div class="container">
+        <div class="row">
+            <div class="col-4 offset-4">
+                <div class="card">
+                    <div class="card-header">
+                        <span>
+                            <i class="bi bi-person-fill-add"></i> Registrar Nuevo Usuario
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label>Rol:</label>
+                            <div>
+                                <select class="form-select">
+                                    <option value="0">-- Seleccione un Rol --</option>
 
-            <div class="mb-3">
-                <label>Rol:</label>
-                <div>
-                    <select class="form-select">
-                        <option value="0">-- Seleccione un Rol --</option>
-                       
-                                <option value="1">Administrador</option>
-                       <option value="2">Usuario</option>
-                       
-                    </select>
-                </div>
-            </div>
+                                    <option value="1">Administrador</option>
+                                    <option value="2">Usuario</option>
 
-
-            <div class="mb-3">
-                <label>Nombre:</label>
-                <div>
-                    <InputText class="form-control" @bind-Value="@userDTO.FirstName" />
-                    <ValidationMessage For="@(() => userDTO.FirstName)" />
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Nombre:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="@userDTO.FirstName" />
+                                <ValidationMessage For="@(() => userDTO.FirstName)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Apellido:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="@userDTO.LastName" />
+                                <ValidationMessage For="@(() => userDTO.LastName)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Email:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="@userDTO.Email" />
+                                <ValidationMessage For="@(() => userDTO.Email)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Contraseña:</label>
+                            <div>
+                                <InputText type="password" class="form-control" @bind-Value="@userDTO.Password" />
+                                <ValidationMessage For="@(() => userDTO.Password)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Confirmación de contraseña:</label>
+                            <div>
+                                <InputText type="password" class="form-control" @bind-Value="@userDTO.PasswordConfirm" />
+                                <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-outline-primary" type="submit"><i class="bi bi-person-fill-add"></i> Registrar</button>
                 </div>
             </div>
-            <div class="mb-3">
-                <label>Apellido:</label>
-                <div>
-                    <InputText class="form-control" @bind-Value="@userDTO.LastName" />
-                    <ValidationMessage For="@(() => userDTO.LastName)" />
-                </div>
-            </div>
-            <div class="mb-3">
-                <label>Email:</label>
-                <div>
-                    <InputText class="form-control" @bind-Value="@userDTO.Email" />
-                    <ValidationMessage For="@(() => userDTO.Email)" />
-                </div>
-            </div>
-            <div class="mb-3">
-                <label>Contraseña:</label>
-                <div>
-                    <InputText type="password" class="form-control" @bind-Value="@userDTO.Password" />
-                    <ValidationMessage For="@(() => userDTO.Password)" />
-                </div>
-            </div>
-            <div class="mb-3">
-                <label>Confirmación de contraseña:</label>
-                <div>
-                    <InputText type="password" class="form-control" @bind-Value="@userDTO.PasswordConfirm" />
-                    <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
-                </div>
-            </div>
-            <button class="btn btn-sm btn-primary" type="submit">Registrar</button>
         </div>
     </div>
-    
 </EditForm>
-

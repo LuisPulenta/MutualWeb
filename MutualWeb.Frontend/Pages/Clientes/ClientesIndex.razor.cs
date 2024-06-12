@@ -97,7 +97,8 @@ namespace MutualWeb.Frontend.Pages.Clientes
                 Title = "Confirmación",
                 Text = $"¿Está seguro que quieres borrar al Cliente: {cliente.Titular}?",
                 Icon = SweetAlertIcon.Question,
-                ShowCancelButton = true
+                ShowCancelButton = true,
+                CancelButtonText = "Cancelar",
             });
 
             var confirm = string.IsNullOrEmpty(result.Value);
@@ -129,7 +130,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
                 Position = SweetAlertPosition.Center,
                 ShowConfirmButton = true,
                 Timer = 3000,
-                Background = "LightSkyBlue",
+                Background = "Gainsboro"
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
         }

@@ -33,7 +33,8 @@ namespace MutualWeb.Frontend.Pages.Clientes
                 Toast = true,
                 Position = SweetAlertPosition.Center,
                 ShowConfirmButton = true,
-                Timer = 3000
+                Timer = 3000,
+                Background = "Gainsboro",
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con éxito.");
         }

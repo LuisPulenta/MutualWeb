@@ -58,7 +58,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
                 Position = SweetAlertPosition.Center,
                 ShowConfirmButton = true,
                 Timer = 3000,
-                Background = "LightSkyBlue",
+                Background = "Gainsboro",
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
         }
