@@ -1,0 +1,68 @@
+﻿@page "/usuarios"
+
+@inject IRepository repository
+
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <div class="card-header">
+                    <span>
+                        <i class="bi bi-heart-pulse-fill"></i> Usuarios
+
+                        <a class="btn btn-sm btn-outline-primary float-end" href="/register"><i class="bi bi-plus-square"></i> Nuevo Usuario</a>
+                    </span>
+                </div>
+                <div class="card-body">
+
+
+                    <div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
+                        <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar Usuario..." @bind-value="Filter" />
+                        <button type="button" class="btn btn-sm btn-outline-primary mx-1" @onclick="ApplyFilterAsync"><i class="bi bi-funnel" /> Filtrar</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" @onclick="CleanFilterAsync"><i class="bi bi-x-circle" /> Limpiar</button>
+
+                    </div>
+
+                    <Pagination CurrentPage="currentPage"
+                                TotalPages="totalPages"
+                                SelectedPage="SelectedPageAsync" />
+
+                    <GenericList MyList="Usuarios">
+                        <Body>
+                            <table class="table table-sm table-info table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Rol</th>
+                                        <th>Email</th>
+                                        <th>Activo</th>
+                                        <th style="width:160px"></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var usuario in Usuarios!)
+                                    {
+                                        <tr>
+                                            <td>@usuario.FullName</td>
+                                            <td>@usuario.UserType.ToString()</td>
+                                            <td>@usuario.Email</td>
+                                            <td>@usuario.IsActive</td>
+                                            <td>
+                                                <a href="/usuarios/edit/@usuario.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil"/> Editar</a>
+                                                <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(usuario))><i class="bi bi-trash" /> Borrar</button>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </Body>
+                    </GenericList>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -4,7 +4,10 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MutualWeb.Backend.Data;
+using MutualWeb.Backend.Helpers;
 using MutualWeb.Backend.UnitsOfWork.Interfaces;
 using MutualWeb.Shared.DTOs;
 using MutualWeb.Shared.Entities;
@@ -17,11 +20,13 @@ namespace MutualWeb.Backend.Controllers
     {
         private readonly IUsersUnitOfWork _usersUnitOfWork;
         private readonly IConfiguration _configuration;
+        private readonly DataContext _context;
 
-        public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration)
+        public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration, DataContext context)
         {
             _usersUnitOfWork = usersUnitOfWork;
             _configuration = configuration;
+            _context = context;
         }
 
         //---------------------------------------------------------------------------------------------
@@ -84,6 +89,62 @@ namespace MutualWeb.Backend.Controllers
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration
             };
+        }
+        //--------------------------------------------------------------------------------------------
+        [HttpGet]
+        public async Task<ActionResult> Get([FromQuery] PaginationDTO pagination)
+        {
+            var queryable = _context.Users                
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => 
+                    x.LastName.ToLower().Contains(pagination.Filter.ToLower())
+                    || x.FirstName.ToLower().Contains(pagination.Filter.ToLower())
+                    );
+            }
+
+            return Ok(await queryable
+                .OrderBy(x => x.LastName)
+                .Paginate(pagination)
+                .ToListAsync());
+        }
+
+        //--------------------------------------------------------------------------------------------
+        [HttpGet("totalPages")]
+        public async Task<ActionResult> GetPages([FromQuery] PaginationDTO pagination)
+        {
+            var queryable = _context.Users
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x =>
+                    x.LastName.ToLower().Contains(pagination.Filter.ToLower())
+                    || x.FirstName.ToLower().Contains(pagination.Filter.ToLower())
+                    );
+            }
+
+            double count = await queryable.CountAsync();
+            double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
+            return Ok(totalPages);
+        }
+        
+        //--------------------------------------------------------------------------------------------
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteAsync(string email)
+        {
+            var usuario = await _usersUnitOfWork.GetUserAsync(email);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            _context.Remove(usuario);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }
