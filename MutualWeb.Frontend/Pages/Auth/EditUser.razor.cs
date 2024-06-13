@@ -54,8 +54,8 @@ namespace MutualWeb.Frontend.Pages.Auth
                 return;
             }
 
-            await LoginService.LoginAsync(responseHttp.Response!.Token);
-            NavigationManager.NavigateTo("/");
+            //await LoginService.LoginAsync(responseHttp.Response!.Token);
+            NavigationManager.NavigateTo("/usuarios");
         }
     }
 }
