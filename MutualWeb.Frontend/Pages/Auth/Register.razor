@@ -16,13 +16,14 @@
                         <div class="mb-3">
                             <label>Rol:</label>
                             <div>
-                                <select class="form-select">
+                                <select class="form-select" @bind="userDTO.RolId">
                                     <option value="0">-- Seleccione un Rol --</option>
 
-                                    <option value="1">Administrador</option>
-                                    <option value="2">Usuario</option>
+                                    <option value=1>Administrador</option>
+                                    <option value=2>Usuario</option>
 
                                 </select>
+                                <ValidationMessage For="@(() => userDTO.RolId)" />
                             </div>
                         </div>
                         <div class="mb-3">
@@ -46,7 +47,7 @@
                                 <ValidationMessage For="@(() => userDTO.Email)" />
                             </div>
                         </div>
-                        <div class="mb-3">
+                       @*  <div class="mb-3">
                             <label>Contraseña:</label>
                             <div>
                                 <InputText type="password" class="form-control" @bind-Value="@userDTO.Password" />
@@ -59,7 +60,7 @@
                                 <InputText type="password" class="form-control" @bind-Value="@userDTO.PasswordConfirm" />
                                 <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
                             </div>
-                        </div>
+                        </div> *@
                     </div>
                 </div>
                 <div class="card-footer">

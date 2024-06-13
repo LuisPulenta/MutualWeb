@@ -8,7 +8,7 @@
             <div class="card">
                 <div class="card-header">
                     <span>
-                        <i class="bi bi-heart-pulse-fill"></i> Usuarios
+                        <i class="bi bi-file-person-fill"></i> Usuarios
 
                         <a class="btn btn-sm btn-outline-primary float-end" href="/register"><i class="bi bi-plus-square"></i> Nuevo Usuario</a>
                     </span>
@@ -49,8 +49,8 @@
                                             <td>@usuario.Email</td>
                                             <td>@usuario.IsActive</td>
                                             <td>
-                                                <a href="/usuarios/edit/@usuario.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil"/> Editar</a>
-                                                <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(usuario))><i class="bi bi-trash" /> Borrar</button>
+                                                <a href="/usuarios/edituser/@usuario.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil"/> Editar</a>
+                                                <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(@usuario.Id))><i class="bi bi-trash" /> Borrar</button>
                                             </td>
                                         </tr>
                                     }

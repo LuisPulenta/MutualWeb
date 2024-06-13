@@ -19,8 +19,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
 
         private List<Especialidad>? especialidades;
         private List<TipoCliente>? tiposclientes;
-        private bool loading;
-
+        
         //-----------------------------------------------------------------------------------------------------------
         protected override async Task OnInitializedAsync()
         {

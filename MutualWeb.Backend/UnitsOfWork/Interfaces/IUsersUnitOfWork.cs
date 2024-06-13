@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MutualWeb.Shared.DTOs;
 using MutualWeb.Shared.Entities;
+using MutualWeb.Shared.Responses;
 
 namespace MutualWeb.Backend.UnitsOfWork.Interfaces
 {
@@ -19,5 +20,25 @@ namespace MutualWeb.Backend.UnitsOfWork.Interfaces
         Task<SignInResult> LoginAsync(LoginDTO model);
 
         Task LogoutAsync();
+
+        Task<User> GetUserAsync(Guid userId);
+
+        Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword);
+
+        Task<IdentityResult> UpdateUserAsync(User user);
+
+        Task<string> GenerateEmailConfirmationTokenAsync(User user);
+
+        Task<IdentityResult> ConfirmEmailAsync(User user, string token);
+
+        Task<string> GeneratePasswordResetTokenAsync(User user);
+
+        Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
+
+        Task<ActionResponse<IEnumerable<User>>> GetAsync(PaginationDTO pagination);
+
+        Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
+
+        Task<IdentityResult> DeleteUserAsync(User user);
     }
 }

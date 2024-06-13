@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Components;
 using MutualWeb.Frontend.Repositories;
 using MutualWeb.Shared.Entities;
 using Microsoft.AspNetCore.Authorization;
+using MutualWeb.Shared.DTOs;
+using System.Net;
 
 namespace MutualWeb.Frontend.Pages.Auth
 {
@@ -52,7 +54,7 @@ namespace MutualWeb.Frontend.Pages.Auth
         //-----------------------------------------------------------------------------------------------
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = $"api/accounts?page={page}";
+            var url = $"api/accounts/all?page={page}";
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -89,15 +91,27 @@ namespace MutualWeb.Frontend.Pages.Auth
         }
 
         //-----------------------------------------------------------------------------------------------
-        private async Task DeleteAsync(User usuario)
+        private async Task DeleteAsync(string id)
         {
+            var userResponseHppt = await Repository.GetAsync<User>("/api/accounts");
+            User userLogged = userResponseHppt.Response!;
+
+            if (userLogged.Id == id)
+            {
+                var messageError = "No se puede borrar a uno mismo!!!";
+                await SweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+                return;
+            }
+
+
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Está seguro que quieres borrar es Usuario: {usuario.FullName}?",
+                Text = "¿Realmente deseas eliminar el registro?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
-                CancelButtonText = "Cancelar",
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
             });
 
             var confirm = string.IsNullOrEmpty(result.Value);
@@ -107,22 +121,17 @@ namespace MutualWeb.Frontend.Pages.Auth
                 return;
             }
 
-            var responseHTTP = await Repository.DeleteAsync($"api/accounts/{usuario.Email}");
-            if (responseHTTP.Error)
-            {
-                if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    NavigationManager.NavigateTo("/");
-                }
-                else
-                {
-                    var mensajeError = await responseHTTP.GetErrorMessageAsync();
-                    await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
-                }
-                return;
-            }
+            var httpResponse = await repository.DeleteAsync($"/api/accounts/{id}");
 
-            await LoadAsync();
+            if (httpResponse.Error)
+            {
+                if (httpResponse.HttpResponseMessage.StatusCode != HttpStatusCode.NotFound)
+                {
+                    var messageError = await httpResponse.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+                    return;
+                }
+            }
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
@@ -131,9 +140,10 @@ namespace MutualWeb.Frontend.Pages.Auth
                 Timer = 3000,
                 Background = "Gainsboro",
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro eliminado con éxito.");
+            await LoadAsync();
         }
-
+    
         //-----------------------------------------------------------------------------------------------
         private async Task CleanFilterAsync()
         {

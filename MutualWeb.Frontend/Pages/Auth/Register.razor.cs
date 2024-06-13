@@ -19,7 +19,17 @@ namespace MutualWeb.Frontend.Pages.Auth
         private async Task CreateUserAsync()
         {
             userDTO.UserName = userDTO.Email;
-            userDTO.UserType = UserType.User;
+           
+
+            if (userDTO.RolId == 1)
+            {
+                userDTO.UserType = UserType.Admin;
+            }
+            if (userDTO.RolId == 2)
+            {
+                userDTO.UserType = UserType.User;
+            }
+
             var responseHttp = await Repository.PostAsync<UserDTO, TokenDTO>("/api/accounts/CreateUser", userDTO);
             if (responseHttp.Error)
             {
@@ -28,9 +38,15 @@ namespace MutualWeb.Frontend.Pages.Auth
                 return;
             }
 
-            await LoginService.LoginAsync(responseHttp.Response!.Token);
-            NavigationManager.NavigateTo("/");
+            //await LoginService.LoginAsync(responseHttp.Response!.Token);
+            NavigationManager.NavigateTo("/usuarios");
+        }
+
+        protected override void OnInitialized()
+        {
+            userDTO.Password = "123456";
         }
     }
 }
+
 

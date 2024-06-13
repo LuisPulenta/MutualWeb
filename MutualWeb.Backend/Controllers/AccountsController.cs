@@ -91,7 +91,7 @@ namespace MutualWeb.Backend.Controllers
             };
         }
         //--------------------------------------------------------------------------------------------
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<ActionResult> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = _context.Users                
@@ -130,21 +130,66 @@ namespace MutualWeb.Backend.Controllers
             double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
             return Ok(totalPages);
         }
-        
-        //--------------------------------------------------------------------------------------------
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteAsync(string email)
-        {
-            var usuario = await _usersUnitOfWork.GetUserAsync(email);
 
-            if (usuario == null)
+        //--------------------------------------------------------------------------------------------
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> DeleteAsync(string id)
+        {
+            User user = await _usersUnitOfWork.GetUserAsync(new Guid(id));
+            if (user == null)
             {
                 return NotFound();
             }
-
-            _context.Remove(usuario);
-            await _context.SaveChangesAsync();
+            await _usersUnitOfWork.DeleteUserAsync(user);
             return NoContent();
+        }
+
+        //-------------------------------------------------------------------------------------------------
+        [HttpPut]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> PutAsync(User user)
+        {
+            try
+            {
+                var currentUser = await _usersUnitOfWork.GetUserAsync(user.Email!);
+                if (currentUser == null)
+                {
+                    return NotFound();
+                }
+
+                currentUser.FirstName = user.FirstName;
+                currentUser.LastName = user.LastName;
+                currentUser.UserType = user.UserType;
+                currentUser.IsActive=user.IsActive;
+
+                var result = await _usersUnitOfWork.UpdateUserAsync(currentUser);
+                if (result.Succeeded)
+                {
+                    return Ok(BuildToken(currentUser));
+                }
+
+                return BadRequest(result.Errors.FirstOrDefault());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetAsync()
+        {
+            return Ok(await _usersUnitOfWork.GetUserAsync(User.Identity!.Name!));
+        }
+
+        //-------------------------------------------------------------------------------------------------
+        [HttpGet("/api/accounts/GetUserById/{Id}")]
+        public async Task<User> GetUserById(string Id)
+        {
+            User user = await _usersUnitOfWork.GetUserAsync(new Guid(Id));
+            return user!;
         }
     }
 }
