@@ -30,7 +30,8 @@ namespace MutualWeb.Frontend.Pages.Auth
                 userDTO.UserType = UserType.User;
             }
 
-            var responseHttp = await Repository.PostAsync<UserDTO, TokenDTO>("/api/accounts/CreateUser", userDTO);
+            var responseHttp = await Repository.PostAsync<UserDTO>("/api/accounts/CreateUser", userDTO);
+
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -38,7 +39,7 @@ namespace MutualWeb.Frontend.Pages.Auth
                 return;
             }
 
-            //await LoginService.LoginAsync(responseHttp.Response!.Token);
+            await SweetAlertService.FireAsync("Confirmación", "La cuenta ha sido creada con éxito. Se ha enviado un correo electrónico con las instrucciones para activar el usuario.", SweetAlertIcon.Info);
             NavigationManager.NavigateTo("/usuarios");
         }
 

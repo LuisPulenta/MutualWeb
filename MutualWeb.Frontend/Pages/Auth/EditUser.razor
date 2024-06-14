@@ -8,18 +8,17 @@ else
 {
     <EditForm Model="user" OnValidSubmit="SaveUserAsync">
         <DataAnnotationsValidator />
+        <div class="row">
+            <div class="col-4 offset-4">
+                <div class="card">
+                    <div class="card-header">
+                        <span>
+                            <i class="bi bi-person" /> Editar Usuario
+                            <a class="btn btn-sm btn-outline-secondary float-end" href="/changePassword"><i class="bi bi-key" /> Cambiar Contraseña</a>
+                        </span>
+                    </div>
+                    <div class="card-body">
 
-        <div class="card">
-            <div class="card-header">
-                <span>
-                    <i class="bi bi-person" /> Editar Usuario
-                    <a class="btn btn-sm btn-secondary float-end"><i class="bi bi-key" /> Cambiar Contraseña</a>
-                    <button class="btn btn-sm btn-primary float-end mx-2" type="submit"><i class="bi bi-person-add" /> Guardar Cambios</button>
-                </span>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-6">
                         <div class="mb-3">
                             <label>Nombres:</label>
                             <div>
@@ -34,6 +33,31 @@ else
                                 <ValidationMessage For="@(() => user.LastName)" />
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <label>Rol:</label>
+                            <div>
+                                <select class="form-select" @bind="user.UserType">
+                                    <option value="0">-- Seleccione un Rol --</option>
+
+                                    <option value=1>Administrador</option>
+                                    <option value=2>Usuario</option>
+
+                                </select>
+                                <ValidationMessage For="@(() => user.UserType)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Activo:</label>
+                            <input type="checkbox"  @bind="@user.IsActive">
+                        </div>
+        
+        
+
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-sm btn-outline-success float-start" href="/usuarios"><i class="bi bi-arrow-left" /> Regresar</button>
+                        <button class="btn btn-sm btn-outline-primary float-end mx-2" type="submit"><i class="bi bi-person-add" /> Guardar Cambios</button>
+                        <a class="btn btn-link" href="/ResendToken">Reenviar correo de activación de cuenta</a>
                     </div>
                 </div>
             </div>

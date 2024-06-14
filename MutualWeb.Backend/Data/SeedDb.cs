@@ -52,6 +52,9 @@ namespace MutualWeb.Backend.Data
 
                 await _usersUnitOfWork.AddUserAsync(user, "123456");
                 await _usersUnitOfWork.AddUserToRoleAsync(user, userType.ToString());
+
+                var token = await _usersUnitOfWork.GenerateEmailConfirmationTokenAsync(user);
+                await _usersUnitOfWork.ConfirmEmailAsync(user, token);
             }
 
             return user;

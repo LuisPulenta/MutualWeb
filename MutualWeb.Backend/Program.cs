@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MutualWeb.Backend.Data;
+using MutualWeb.Backend.Helpers;
 using MutualWeb.Backend.Repositories.Implementations;
 using MutualWeb.Backend.Repositories.Interfaces;
 using MutualWeb.Backend.UnitsOfWork.Implementations;
@@ -55,7 +56,6 @@ builder.Services.AddSwaggerGen(c =>
         });
 });
 
-
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DefaultConnection"));
 builder.Services.AddTransient<SeedDb>();
 
@@ -65,8 +65,12 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
 
+builder.Services.AddScoped<IMailHelper, MailHelper>();
+
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {
+    x.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+    x.SignIn.RequireConfirmedEmail = true;
     x.User.RequireUniqueEmail = true;
     x.Password.RequireDigit = false;
     x.Password.RequiredUniqueChars = 0;
@@ -74,6 +78,10 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     x.Password.RequireNonAlphanumeric = false;
     x.Password.RequireUppercase = false;
     x.Password.RequiredLength = 6;
+    x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    x.Lockout.MaxFailedAccessAttempts = 3;
+    x.Lockout.AllowedForNewUsers = true;
+
 })
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();

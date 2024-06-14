@@ -57,16 +57,19 @@ namespace MutualWeb.Backend.Repositories.Implementations
             return user!;
         }
 
+        //-------------------------------------------------------------------------------------------
         public async Task<bool> IsUserInRoleAsync(User user, string roleName)
         {
             return await _userManager.IsInRoleAsync(user, roleName);
         }
 
+        //-------------------------------------------------------------------------------------------
         public async Task<SignInResult> LoginAsync(LoginDTO model)
         {
             return await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
         }
 
+        //-------------------------------------------------------------------------------------------
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();

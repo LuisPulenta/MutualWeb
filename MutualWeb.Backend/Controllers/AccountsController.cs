@@ -11,6 +11,7 @@ using MutualWeb.Backend.Helpers;
 using MutualWeb.Backend.UnitsOfWork.Interfaces;
 using MutualWeb.Shared.DTOs;
 using MutualWeb.Shared.Entities;
+using MutualWeb.Shared.Responses;
 
 namespace MutualWeb.Backend.Controllers
 {
@@ -21,12 +22,14 @@ namespace MutualWeb.Backend.Controllers
         private readonly IUsersUnitOfWork _usersUnitOfWork;
         private readonly IConfiguration _configuration;
         private readonly DataContext _context;
+        private readonly IMailHelper _mailHelper;
 
-        public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration, DataContext context)
+        public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration, DataContext context , IMailHelper mailHelper)
         {
             _usersUnitOfWork = usersUnitOfWork;
             _configuration = configuration;
             _context = context;
+            _mailHelper = mailHelper;
         }
 
         //---------------------------------------------------------------------------------------------
@@ -39,10 +42,53 @@ namespace MutualWeb.Backend.Controllers
             if (result.Succeeded)
             {
                 await _usersUnitOfWork.AddUserToRoleAsync(user, user.UserType.ToString());
-                return Ok(BuildToken(user));
+                var response = await SendConfirmationEmailAsync(user);
+                if (response.WasSuccess)
+                {
+                    return NoContent();
+                }
+
+                return BadRequest(response.Message);
             }
 
             return BadRequest(result.Errors.FirstOrDefault());
+        }
+
+        //---------------------------------------------------------------------------------------------
+        private async Task<ActionResponse<string>> SendConfirmationEmailAsync(User user)
+        {
+            var myToken = await _usersUnitOfWork.GenerateEmailConfirmationTokenAsync(user);
+            var tokenLink = Url.Action("ConfirmEmail", "accounts", new
+            {
+                userid = user.Id,
+                token = myToken
+            }, HttpContext.Request.Scheme, _configuration["Url Frontend"]);
+
+            return _mailHelper.SendMail(user.FullName, user.Email!,
+                $"Mutual MyPJ HP - Confirmación de cuenta",
+                $"<h1>Mutual MyPJ HP - Confirmación de cuenta</h1>" +
+                $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
+                $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
+        }
+
+        //---------------------------------------------------------------------------------------------
+        [HttpGet("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmailAsync(string userId, string token)
+        {
+            token = token.Replace(" ", "+");
+            var user = await _usersUnitOfWork.GetUserAsync(new Guid(userId));
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _usersUnitOfWork.ConfirmEmailAsync(user, token);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors.FirstOrDefault());
+            }
+
+            return NoContent();
         }
 
         //---------------------------------------------------------------------------------------------
@@ -59,6 +105,15 @@ namespace MutualWeb.Backend.Controllers
                     return BadRequest("Usuario no activo.");
                 }
                 return Ok(BuildToken(user));
+            }
+            if (result.IsLockedOut)
+            {
+                return BadRequest("Ha superado el máximo número de intentos, su cuenta está bloqueada, intente de nuevo en 5 minutos.");
+            }
+
+            if (result.IsNotAllowed)
+            {
+                return BadRequest("El usuario no ha sido habilitado, debes de seguir las instrucciones del correo enviado para poder habilitar el usuario.");
             }
             return BadRequest("Email o contraseña incorrectos.");
         }
@@ -190,6 +245,50 @@ namespace MutualWeb.Backend.Controllers
         {
             User user = await _usersUnitOfWork.GetUserAsync(new Guid(Id));
             return user!;
+        }
+
+        //-------------------------------------------------------------------------------------------------
+        [HttpPost("changePassword")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _usersUnitOfWork.GetUserAsync(User.Identity!.Name!);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _usersUnitOfWork.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors.FirstOrDefault()!.Description);
+            }
+
+            return NoContent();
+        }
+
+        //-------------------------------------------------------------------------------------------------
+        [HttpPost("ResendToken")]
+        public async Task<IActionResult> ResendTokenAsync([FromBody] EmailDTO model)
+        {
+            var user = await _usersUnitOfWork.GetUserAsync(model.Email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var response = await SendConfirmationEmailAsync(user);
+            if (response.WasSuccess)
+            {
+                return NoContent();
+            }
+
+            return BadRequest(response.Message);
         }
     }
 }
