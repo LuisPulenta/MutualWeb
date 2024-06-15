@@ -16,6 +16,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
 
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
 
         private int currentPage = 1;
         private int totalPages;
@@ -53,7 +54,9 @@ namespace MutualWeb.Frontend.Pages.Clientes
         //-----------------------------------------------------------------------------------------------
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = $"api/clientes?page={page}";
+            ValidateRecordsNumber(RecordsNumber);
+            var url = $"api/clientes?page={page}&recordsnumber={RecordsNumber}";
+
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -73,10 +76,12 @@ namespace MutualWeb.Frontend.Pages.Clientes
         //-----------------------------------------------------------------------------------------------
         private async Task LoadPagesAsync()
         {
-            var url = "api/clientes/totalPages";
+            ValidateRecordsNumber(RecordsNumber);
+            var url = $"api/clientes/totalPages?recordsnumber={RecordsNumber}";
+            
             if (!string.IsNullOrEmpty(Filter))
             {
-                url += $"?filter={Filter}";
+                url += $"&filter={Filter}";
             }
 
             var responseHttp = await Repository.GetAsync<int>(url);
@@ -136,18 +141,37 @@ namespace MutualWeb.Frontend.Pages.Clientes
         }
 
         //-----------------------------------------------------------------------------------------------
-        private async Task CleanFilterAsync()
-        {
-            Filter = string.Empty;
-            await ApplyFilterAsync();
-        }
-
-        //-----------------------------------------------------------------------------------------------
         private async Task ApplyFilterAsync()
         {
             int page = 1;
             await LoadAsync(page);
             await SelectedPageAsync(page);
+        }
+        
+        //-----------------------------------------------------------------------------------------------
+        private async Task FilterCallBack(string filter)
+        {
+            Filter = filter;
+            await ApplyFilterAsync();
+            StateHasChanged();
+        }
+
+        //-----------------------------------------------------------------------------------------------
+        private async Task SelectedRecordsNumberAsync(int recordsnumber)
+        {
+            RecordsNumber = recordsnumber;
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+
+        //-----------------------------------------------------------------------------------------------
+        private void ValidateRecordsNumber(int recordsnumber)
+        {
+            if (recordsnumber == 0)
+            {
+                RecordsNumber = 10;
+            }
         }
     }
 }

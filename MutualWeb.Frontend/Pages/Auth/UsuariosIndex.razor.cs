@@ -1,9 +1,8 @@
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using MutualWeb.Frontend.Repositories;
 using MutualWeb.Shared.Entities;
-using Microsoft.AspNetCore.Authorization;
-using MutualWeb.Shared.DTOs;
 using System.Net;
 
 namespace MutualWeb.Frontend.Pages.Auth
@@ -17,6 +16,7 @@ namespace MutualWeb.Frontend.Pages.Auth
 
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
 
         private int currentPage = 1;
         private int totalPages;
@@ -54,7 +54,9 @@ namespace MutualWeb.Frontend.Pages.Auth
         //-----------------------------------------------------------------------------------------------
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = $"api/accounts/all?page={page}";
+            ValidateRecordsNumber(RecordsNumber);
+            var url = $"api/accounts/all?page={page}&recordsnumber={RecordsNumber}";
+
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -74,10 +76,12 @@ namespace MutualWeb.Frontend.Pages.Auth
         //-----------------------------------------------------------------------------------------------
         private async Task LoadPagesAsync()
         {
-            var url = "api/accounts/totalPages";
+            ValidateRecordsNumber(RecordsNumber);
+            var url = $"api/accounts/totalPages?recordsnumber={RecordsNumber}";
+            
             if (!string.IsNullOrEmpty(Filter))
             {
-                url += $"?filter={Filter}";
+                url += $"&filter={Filter}";
             }
 
             var responseHttp = await Repository.GetAsync<int>(url);
@@ -145,18 +149,37 @@ namespace MutualWeb.Frontend.Pages.Auth
         }
     
         //-----------------------------------------------------------------------------------------------
-        private async Task CleanFilterAsync()
-        {
-            Filter = string.Empty;
-            await ApplyFilterAsync();
-        }
-
-        //-----------------------------------------------------------------------------------------------
         private async Task ApplyFilterAsync()
         {
             int page = 1;
             await LoadAsync(page);
             await SelectedPageAsync(page);
+        }
+
+        //-----------------------------------------------------------------------------------------------
+        private async Task FilterCallBack(string filter)
+        {
+            Filter = filter;
+            await ApplyFilterAsync();
+            StateHasChanged();
+        }
+        
+        //-----------------------------------------------------------------------------------------------
+        private async Task SelectedRecordsNumberAsync(int recordsnumber)
+        {
+            RecordsNumber = recordsnumber;
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+
+        //-----------------------------------------------------------------------------------------------
+        private void ValidateRecordsNumber(int recordsnumber)
+        {
+            if (recordsnumber == 0)
+            {
+                RecordsNumber = 10;
+            }
         }
     }
 }

@@ -67,7 +67,7 @@ namespace MutualWeb.Backend.Controllers
             return _mailHelper.SendMail(user.FullName, user.Email!,
                 $"Mutual MyPJ HP - Confirmación de cuenta",
                 $"<h1>Mutual MyPJ HP - Confirmación de cuenta</h1>" +
-                $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
+                $"<p>Para habilitar el usuario, por favor hacer clic en 'Confirmar Email':</p>" +
                 $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
         }
 
@@ -290,5 +290,56 @@ namespace MutualWeb.Backend.Controllers
 
             return BadRequest(response.Message);
         }
+
+        //-------------------------------------------------------------------------------------------------
+        [HttpPost("RecoverPassword")]
+        public async Task<IActionResult> RecoverPasswordAsync([FromBody] EmailDTO model)
+        {
+            var user = await _usersUnitOfWork.GetUserAsync(model.Email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var myToken = await _usersUnitOfWork.GeneratePasswordResetTokenAsync(user);
+            var tokenLink = Url.Action("ResetPassword", "accounts", new
+            {
+                userid = user.Id,
+                token = myToken
+            }, HttpContext.Request.Scheme, _configuration["Url Frontend"]);
+
+            var response = _mailHelper.SendMail(user.FullName, user.Email!,
+                $"Mutual MyPJ HP - Recuperación de contraseña",
+                $"<h1>Mutual MyPJ HP - Recuperación de contraseña</h1>" +
+                $"<p>Para recuperar su contraseña, por favor hacer clic en 'Recuperar Contraseña':</p>" +
+                $"<b><a href ={tokenLink}>Recuperar Contraseña</a></b>");
+
+            if (response.WasSuccess)
+            {
+                return NoContent();
+            }
+
+            return BadRequest(response.Message);
+        }
+
+        //-------------------------------------------------------------------------------------------------
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordDTO model)
+        {
+            var user = await _usersUnitOfWork.GetUserAsync(model.Email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _usersUnitOfWork.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+            {
+                return NoContent();
+            }
+
+            return BadRequest(result.Errors.FirstOrDefault()!.Description);
+        }
+
     }
 }

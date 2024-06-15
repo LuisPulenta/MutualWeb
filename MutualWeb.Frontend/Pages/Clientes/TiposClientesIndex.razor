@@ -16,15 +16,12 @@
                 <div class="card-body">
 
 
-                    <div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
-                        <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar Tipo de Cliente..." @bind-value="Filter" />
-                        <button type="button" class="btn btn-sm btn-outline-primary mx-1" @onclick="ApplyFilterAsync"><i class="bi bi-funnel" /> Filtrar</button>
-                        <button type="button" class="btn btn-sm btn-outline-danger" @onclick="CleanFilterAsync"><i class="bi bi-x-circle" /> Limpiar</button>
-                    </div>
+                    <Filter PlaceHolder="Buscar Tipo de Cliente..." Callback=@FilterCallBack />
 
                     <Pagination CurrentPage="currentPage"
                                 TotalPages="totalPages"
-                                SelectedPage="SelectedPageAsync" />
+                                SelectedPage="SelectedPageAsync"
+                                RecordsNumber="SelectedRecordsNumberAsync" />
 
 
                     <GenericList MyList="TiposClientes">

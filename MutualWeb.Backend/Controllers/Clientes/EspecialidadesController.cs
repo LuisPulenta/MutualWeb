@@ -31,7 +31,8 @@ namespace MutualWeb.Backend.Controllers
 
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
             {
-                queryable = queryable.Where(x => x.Nombre.ToLower().Contains(pagination.Filter.ToLower()));
+                queryable = queryable.Where(x =>
+                x.Nombre.ToLower().Contains(pagination.Filter.ToLower()));
             }
 
             return Ok(await queryable
