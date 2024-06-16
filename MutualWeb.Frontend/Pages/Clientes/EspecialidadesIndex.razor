@@ -10,7 +10,7 @@
                     <span>
                         <i class="bi bi-heart-pulse-fill"></i> Especialidades
 
-                        <a class="btn btn-sm btn-outline-primary float-end" href="/especialidades/create"><i class="bi bi-plus-square"></i> Nueva Especialidad</a>
+                        <a class="btn btn-sm btn-outline-primary float-end" @onclick=@(() => ShowModalAsync())><i class="bi bi-plus-square"></i> Nueva Especialidad</a>
                     </span>
                 </div>
                 <div class="card-body">
@@ -40,7 +40,7 @@
                                             <td>@especialidad.Id</td>
                                             <td>@especialidad.Nombre</td>
                                             <td>
-                                                <a href="/especialidades/edit/@especialidad.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil"/> Editar</a>
+                                                <a @onclick=@(() => ShowModalAsync(especialidad.Id, true)) class="btn btn-sm btn-warning"><i class="bi bi-pencil" /> Editar</a>
                                                 <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(especialidad))><i class="bi bi-trash" /> Borrar</button>
                                             </td>
                                         </tr>

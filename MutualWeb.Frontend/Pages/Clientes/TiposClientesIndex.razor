@@ -10,7 +10,7 @@
                     <span>
                         <i class="bi bi-tag-fill"></i> Tipos de Clientes
 
-                        <a class="btn btn-sm btn-outline-primary float-end" href="/tiposclientes/create"><i class="bi bi-plus-square"></i> Nuevo Tipo de Cliente</a>
+                        <a class="btn btn-sm btn-outline-primary float-end" @onclick=@(() => ShowModalAsync())><i class="bi bi-plus-square"></i> Nuevo Tipo de Cliente</a>
                     </span>
                 </div>
                 <div class="card-body">
@@ -43,7 +43,7 @@
                                             <td>@tipoCliente.DescripcionTipoCliente</td>
                                             <td>@tipoCliente.ClienteInae</td>
                                             <td>
-                                                <a href="/tiposclientes/edit/@tipoCliente.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil" /> Editar</a>
+                                                <a @onclick=@(() => ShowModalAsync(tipoCliente.Id, true)) class="btn btn-sm btn-warning"><i class="bi bi-pencil" /> Editar</a>
                                                 <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(tipoCliente))><i class="bi bi-trash" /> Borrar</button>
                                             </td>
                                         </tr>

@@ -1,3 +1,5 @@
+using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using MutualWeb.Frontend.Repositories;
@@ -14,6 +16,8 @@ namespace MutualWeb.Frontend.Pages.Auth
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
 
+        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
         private async Task ChangePasswordAsync()
         {
             loading = true;
@@ -27,15 +31,23 @@ namespace MutualWeb.Frontend.Pages.Auth
             }
 
             loading = false;
-            NavigationManager.NavigateTo("/editUser");
+            await BlazoredModal.CloseAsync(ModalResult.Ok());
+
+            NavigationManager.NavigateTo("/usuarios");
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
                 Position = SweetAlertPosition.Center,
                 ShowConfirmButton = true,
-                Timer = 3000
+                Timer = 3000,
+                Background = "Gainsboro",
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Contraseña cambiada con éxito.");
+        }
+
+        private void Return()
+        {
+            NavigationManager.NavigateTo("usuarios");
         }
 
     }

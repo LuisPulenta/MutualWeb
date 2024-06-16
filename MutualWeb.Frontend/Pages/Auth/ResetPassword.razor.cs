@@ -1,3 +1,4 @@
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using MutualWeb.Frontend.Repositories;
@@ -13,7 +14,10 @@ namespace MutualWeb.Frontend.Pages.Auth
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
+
         [Parameter, SupplyParameterFromQuery] public string Token { get; set; } = string.Empty;
+
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
 
         private async Task ChangePasswordAsync()
         {
@@ -30,7 +34,7 @@ namespace MutualWeb.Frontend.Pages.Auth
             }
 
             await SweetAlertService.FireAsync("Confirmación", "Contraseña cambiada con éxito, ahora puede ingresar con su nueva contraseña.", SweetAlertIcon.Info);
-            NavigationManager.NavigateTo("/Login");
+            Modal.Show<Login>();
         }
     }
 }

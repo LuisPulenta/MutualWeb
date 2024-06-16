@@ -4,7 +4,7 @@
     <DataAnnotationsValidator />
     <div class="container">
         <div class="row">
-            <div class="col-4 offset-4">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-header">
                         <span>
@@ -31,10 +31,12 @@
                         <div>
                             <p><a class="bbtn btn-link" href="/ResendToken">Reenviar correo de activación de cuenta</a></p>
                             <p><a class="btn btn-link" href="/RecoverPassword">¿Has olvidado tu contraseña?</a></p>
-                            <button class="btn btn-sm btn-outline-primary float-end mx-2" type="submit">
+                            @* <button class="btn btn-sm btn-outline-primary float-end mx-2" type="submit">
                                 <i class="bi bi-door-open-fill"></i>
                                 Iniciar Sesión
-                            </button>
+                            </button> *@
+                            <button class="btn btn-sm btn-primary float-end" @onclick=@(() => LoginAsync())><i class="bi-door-open-fill" /> Iniciar Sesión</button>
+                            <button class="btn btn-sm mx-1 btn-danger float-end" @onclick=@(() => CloseModalAsync())><i class="bi bi-x-circle" /> Cancelar</button>
                         </div>
                     </div>
                 </div>

@@ -1,3 +1,5 @@
+using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using MutualWeb.Frontend.Repositories;
@@ -15,6 +17,8 @@ namespace MutualWeb.Frontend.Pages.Auth
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private ILoginService LoginService { get; set; } = null!;
+
+        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
         private async Task CreateUserAsync()
         {
@@ -39,8 +43,13 @@ namespace MutualWeb.Frontend.Pages.Auth
                 return;
             }
 
+            await BlazoredModal.CloseAsync(ModalResult.Ok());
+
             await SweetAlertService.FireAsync("Confirmación", "La cuenta ha sido creada con éxito. Se ha enviado un correo electrónico con las instrucciones para activar el usuario.", SweetAlertIcon.Info);
             NavigationManager.NavigateTo("/usuarios");
+
+            
+            
         }
 
         protected override void OnInitialized()

@@ -1,3 +1,5 @@
+using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
@@ -18,6 +20,8 @@ namespace MutualWeb.Frontend.Pages.Clientes
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
 
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
+
         private int currentPage = 1;
         private int totalPages;
 
@@ -26,6 +30,27 @@ namespace MutualWeb.Frontend.Pages.Clientes
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
+        }
+
+        //-----------------------------------------------------------------------------------------------
+        private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+        {
+            IModalReference modalReference;
+
+            if (isEdit)
+            {
+                modalReference = Modal.Show<TipoClienteEdit>(string.Empty, new ModalParameters().Add("Id", id));
+            }
+            else
+            {
+                modalReference = Modal.Show<TipoClienteCreate>();
+            }
+
+            var result = await modalReference.Result;
+            if (result.Confirmed)
+            {
+                await LoadAsync();
+            }
         }
 
         //-----------------------------------------------------------------------------------------------

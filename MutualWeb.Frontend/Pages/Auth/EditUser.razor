@@ -9,12 +9,12 @@ else
     <EditForm Model="user" OnValidSubmit="SaveUserAsync">
         <DataAnnotationsValidator />
         <div class="row">
-            <div class="col-4 offset-4">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-header">
                         <span>
                             <i class="bi bi-person" /> Editar Usuario
-                            <a class="btn btn-sm btn-outline-secondary float-end" href="/changePassword"><i class="bi bi-key" /> Cambiar Contraseña</a>
+                            <a class="btn btn-sm btn-outline-secondary float-end" @onclick=@(() => ShowModal()) ><i class="bi bi-key" /> Cambiar Contraseña</a>
                         </span>
                     </div>
                     <div class="card-body">

@@ -1,3 +1,5 @@
+using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using MutualWeb.Frontend.Repositories;
@@ -16,7 +18,16 @@ namespace MutualWeb.Frontend.Pages.Auth
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private ILoginService LoginService { get; set; } = null!;
-        
+
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
+        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+        //--------------------------------------------------------------------------------------------------------|
+        private void ShowModal()
+        {
+            Modal.Show<ChangePassword>();
+        }
+
 
         //--------------------------------------------------------------------------------------------------------
 
@@ -54,8 +65,24 @@ namespace MutualWeb.Frontend.Pages.Auth
                 return;
             }
 
-            //await LoginService.LoginAsync(responseHttp.Response!.Token);
-            NavigationManager.NavigateTo("/usuarios");
+            await BlazoredModal.CloseAsync(ModalResult.Ok());
+            Return();
+
+            var toast = SweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.Center,
+                ShowConfirmButton = true,
+                Timer = 3000,
+                Background = "Gainsboro",
+            });
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
+
+        }
+        private void Return()
+        {
+            NavigationManager.NavigateTo("usuarios");
+
         }
     }
 }

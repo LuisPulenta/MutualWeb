@@ -10,7 +10,7 @@
                     <span>
                         <i class="bi bi-file-person-fill"></i> Usuarios
 
-                        <a class="btn btn-sm btn-outline-primary float-end" href="/Register"><i class="bi bi-plus-square"></i> Nuevo Usuario</a>
+                        <a class="btn btn-sm btn-outline-primary float-end" @onclick=@(() => ShowModalAsync())><i class="bi bi-plus-square"></i> Nuevo Usuario</a>
                     </span>
                 </div>
                 <div class="card-body">
@@ -51,7 +51,7 @@
                                                 <input type="checkbox" onclick="return false" @bind="@usuario.IsActive">
                                             </td>
                                             <td>
-                                                <a href="/usuarios/edituser/@usuario.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil"/> Editar</a>
+                                                <a @onclick=@(() => ShowModalAsync(usuario.Id, true)) class="btn btn-sm btn-warning"><i class="bi bi-pencil" /> Editar</a>
                                                 <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(@usuario.Id))><i class="bi bi-trash" /> Borrar</button>
                                             </td>
                                         </tr>

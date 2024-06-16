@@ -1,6 +1,9 @@
+using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using MutualWeb.Frontend.Pages.Clientes;
 using MutualWeb.Frontend.Repositories;
 using MutualWeb.Shared.Entities;
 using System.Net;
@@ -18,10 +21,33 @@ namespace MutualWeb.Frontend.Pages.Auth
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
 
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
+
         private int currentPage = 1;
         private int totalPages;
 
         public List<User>? Usuarios { get; set; }
+
+        //-----------------------------------------------------------------------------------------------
+        private async Task ShowModalAsync(string Id = "", bool isEdit = false)
+        {
+            IModalReference modalReference;
+
+            if (isEdit)
+            {
+                modalReference = Modal.Show<EditUser>(string.Empty, new ModalParameters().Add("UserId", Id));
+            }
+            else
+            {
+                modalReference = Modal.Show<Register>();
+            }
+
+            var result = await modalReference.Result;
+            if (result.Confirmed)
+            {
+                await LoadAsync();
+            }
+        }
 
         //-----------------------------------------------------------------------------------------------
         protected override async Task OnInitializedAsync()
