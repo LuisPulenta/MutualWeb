@@ -59,10 +59,6 @@ namespace MutualWeb.Frontend.Pages.Auth
                 });
                 await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambie su Contraseña 123456 por una más segura.");
             }
-
-                
-
-
             NavigationManager.NavigateTo("/");
         }
     }
