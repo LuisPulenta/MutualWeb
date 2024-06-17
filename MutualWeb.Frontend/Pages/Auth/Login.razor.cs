@@ -45,6 +45,24 @@ namespace MutualWeb.Frontend.Pages.Auth
             }
 
             await LoginService.LoginAsync(responseHttp.Response!.Token);
+
+
+            if (loginDTO.Password=="123456")
+            {
+                var toast = SweetAlertService.Mixin(new SweetAlertOptions
+                {
+                    Toast = true,
+                    Position = SweetAlertPosition.Center,
+                    ShowConfirmButton = true,
+                    Timer = 3000,
+                    Background = "Gainsboro",
+                });
+                await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambie su Contraseña 123456 por una más segura.");
+            }
+
+                
+
+
             NavigationManager.NavigateTo("/");
         }
     }

@@ -9,7 +9,7 @@ using MutualWeb.Shared.Entities;
 
 namespace MutualWeb.Frontend.Pages.Auth
 {
-    public partial class EditUser
+    public partial class EditMyUser
     {
         private User? user;
         [Parameter] public string? UserId { get; set; }
@@ -39,7 +39,7 @@ namespace MutualWeb.Frontend.Pages.Auth
         //--------------------------------------------------------------------------------------------------------
         private async Task LoadUserAsyc()
         {
-            var responseHTTP = await Repository.GetAsync<User>($"/api/accounts/GetUserById/{UserId}");
+            var responseHTTP = await Repository.GetAsync<User>($"/api/accounts");
             if (responseHTTP.Error)
             {
                 if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -57,16 +57,6 @@ namespace MutualWeb.Frontend.Pages.Auth
         //--------------------------------------------------------------------------------------------------------
         private async Task SaveUserAsync()
         {
-            var userResponseHppt = await Repository.GetAsync<User>("/api/accounts");
-            User userLogged = userResponseHppt.Response!;
-
-            if (userLogged.Id == user!.Id && !user.IsActive)
-            {
-                var messageError = "No se puede desactivar a uno mismo!!!";
-                await SweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
-                return;
-            }
-
             var responseHttp = await Repository.PutAsync<User, TokenDTO>("/api/accounts", user!);
             if (responseHttp.Error)
             {
@@ -75,7 +65,6 @@ namespace MutualWeb.Frontend.Pages.Auth
                 return;
             }
 
-            await BlazoredModal.CloseAsync(ModalResult.Ok());
             Return();
 
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
@@ -91,7 +80,7 @@ namespace MutualWeb.Frontend.Pages.Auth
         }
         private void Return()
         {
-            NavigationManager.NavigateTo("usuarios");
+            NavigationManager.NavigateTo("/");
 
         }
     }

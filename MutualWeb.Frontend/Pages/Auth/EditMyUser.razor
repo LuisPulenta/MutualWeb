@@ -1,4 +1,4 @@
-﻿@page "/usuarios/edituser/{UserId}"
+﻿@page "/editmyuser"
 
 @if (user is null)
 {
@@ -9,12 +9,12 @@ else
     <EditForm Model="user" OnValidSubmit="SaveUserAsync">
         <DataAnnotationsValidator />
         <div class="row">
-            <div class="col-12">
+            <div class="col-4 offset-4">
                 <div class="card">
                     <div class="card-header">
                         <span>
-                            <i class="bi bi-person mx-2" /> Editar Usuario
-                            <a class="btn btn-sm btn-outline-secondary float-end mx-2" @onclick=@(() => ShowModal()) ><i class="bi bi-key" /> Cambiar Contraseña</a>
+                            <i class="bi bi-person-circle" /> Mi Cuenta
+                            <a class="btn btn-sm btn-outline-secondary float-end" @onclick=@(() => ShowModal()) ><i class="bi bi-key" /> Cambiar Contraseña</a>
                         </span>
                     </div>
                     <div class="card-body">
@@ -33,29 +33,10 @@ else
                                 <ValidationMessage For="@(() => user.LastName)" />
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label>Rol:</label>
-                            <div>
-                                <select class="form-select" @bind="user.UserType">
-                                    <option value="0">-- Seleccione un Rol --</option>
-
-                                    <option value=1>Administrador</option>
-                                    <option value=2>Usuario</option>
-
-                                </select>
-                                <ValidationMessage For="@(() => user.UserType)" />
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label>Activo:</label>
-                            <input type="checkbox"  @bind="@user.IsActive">
-                        </div>
-        
-        
-
+                       
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-sm btn-outline-success float-start" href="/usuarios"><i class="bi bi-arrow-left" /> Regresar</button>
+                        <button class="btn btn-sm btn-outline-success float-start" @onclick=@(() => Return())><i class="bi bi-arrow-left" /> Regresar</button>
                         <button class="btn btn-sm btn-outline-primary float-end mx-2" type="submit"><i class="bi bi-person-add" /> Guardar Cambios</button>
                     </div>
                 </div>

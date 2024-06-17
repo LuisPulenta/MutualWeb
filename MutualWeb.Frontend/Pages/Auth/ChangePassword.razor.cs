@@ -33,7 +33,7 @@ namespace MutualWeb.Frontend.Pages.Auth
             loading = false;
             await BlazoredModal.CloseAsync(ModalResult.Ok());
 
-            NavigationManager.NavigateTo("/usuarios");
+            Return();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
@@ -47,7 +47,7 @@ namespace MutualWeb.Frontend.Pages.Auth
 
         private void Return()
         {
-            NavigationManager.NavigateTo("usuarios");
+            NavigationManager.NavigateTo("/editmyuser");
         }
 
     }
