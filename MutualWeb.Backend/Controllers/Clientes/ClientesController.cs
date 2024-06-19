@@ -63,6 +63,22 @@ namespace MutualWeb.Backend.Controllers
         }
 
         //--------------------------------------------------------------------------------------------
+        [HttpGet("totalRegisters")]
+        public async Task<ActionResult> GetTotalRegisters([FromQuery] PaginationDTO pagination)
+        {
+            var queryable = _context.Clientes
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Nombre.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+            int count = await queryable.CountAsync();
+            return Ok(count);
+        }
+
+        //--------------------------------------------------------------------------------------------
         [HttpGet("{id:int}")]
         public async Task<ActionResult> Get(int id)
         {

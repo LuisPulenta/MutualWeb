@@ -22,9 +22,9 @@
                                 TotalPages="totalPages"
                                 SelectedPage="SelectedPageAsync"
                                 RecordsNumber="SelectedRecordsNumberAsync" />
+                    <p class="float-end">Total Registros: @totalRegisters</p>
 
-
-                    <GenericList MyList="TiposClientes">
+                    <GenericList MyList="TiposClientes" IsLoading="IsLoading">
                         <Body>
                             <table class="table table-sm table-info table-striped">
                                 <thead>

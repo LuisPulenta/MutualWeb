@@ -25,6 +25,8 @@ namespace MutualWeb.Frontend.Pages.Auth
 
         private int currentPage = 1;
         private int totalPages;
+        private int totalRegisters;
+        private bool IsLoading;
 
         public List<User>? Usuarios { get; set; }
 
@@ -74,6 +76,7 @@ namespace MutualWeb.Frontend.Pages.Auth
             if (ok)
             {
                 await LoadPagesAsync();
+                await LoadTotalRegistersAsync();
             }
         }
 
@@ -88,7 +91,10 @@ namespace MutualWeb.Frontend.Pages.Auth
                 url += $"&filter={Filter}";
             }
 
+            IsLoading = true;
             var responseHttp = await Repository.GetAsync<List<User>>(url);
+            IsLoading = false;
+
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -118,6 +124,26 @@ namespace MutualWeb.Frontend.Pages.Auth
                 return;
             }
             totalPages = responseHttp.Response;
+        }
+
+        //-----------------------------------------------------------------------------------------------
+        private async Task LoadTotalRegistersAsync()
+        {
+            var url = $"api/accounts/totalRegisters";
+
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"?filter={Filter}";
+            }
+
+            var responseHttp = await Repository.GetAsync<int>(url);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+            totalRegisters = responseHttp.Response;
         }
 
         //-----------------------------------------------------------------------------------------------

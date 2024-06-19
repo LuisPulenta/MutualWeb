@@ -187,6 +187,24 @@ namespace MutualWeb.Backend.Controllers
         }
 
         //--------------------------------------------------------------------------------------------
+        [HttpGet("totalRegisters")]
+        public async Task<ActionResult> GetTotalRegisters([FromQuery] PaginationDTO pagination)
+        {
+            var queryable = _context.Users
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x =>
+                    x.LastName.ToLower().Contains(pagination.Filter.ToLower())
+                    || x.FirstName.ToLower().Contains(pagination.Filter.ToLower())
+                    );
+            }
+
+            int count = await queryable.CountAsync();
+            return Ok(count);
+        }
+        //--------------------------------------------------------------------------------------------
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteAsync(string id)
         {
@@ -340,6 +358,5 @@ namespace MutualWeb.Backend.Controllers
 
             return BadRequest(result.Errors.FirstOrDefault()!.Description);
         }
-
     }
 }

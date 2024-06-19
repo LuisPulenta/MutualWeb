@@ -2,10 +2,12 @@ using Blazored.Modal;
 using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
+using MutualWeb.Frontend.Pages.Clientes;
 using MutualWeb.Frontend.Repositories;
 using MutualWeb.Frontend.Services;
 using MutualWeb.Shared.DTOs;
 using MutualWeb.Shared.Entities;
+using System.Net;
 
 namespace MutualWeb.Frontend.Pages.Auth
 {
@@ -27,7 +29,6 @@ namespace MutualWeb.Frontend.Pages.Auth
         {
             Modal.Show<ChangePassword>();
         }
-
 
         //--------------------------------------------------------------------------------------------------------
 
@@ -89,10 +90,11 @@ namespace MutualWeb.Frontend.Pages.Auth
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
 
         }
+
+        //--------------------------------------------------------------------------------------------------------
         private void Return()
         {
             NavigationManager.NavigateTo("usuarios");
-
         }
     }
 }

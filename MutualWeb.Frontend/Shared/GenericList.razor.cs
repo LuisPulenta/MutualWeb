@@ -8,6 +8,9 @@ namespace MutualWeb.Frontend.Shared
         public RenderFragment? Loading { get; set; }
 
         [Parameter]
+        public bool IsLoading { get; set; } = false;
+
+        [Parameter]
         public RenderFragment? NoRecords { get; set; }
 
         [EditorRequired]

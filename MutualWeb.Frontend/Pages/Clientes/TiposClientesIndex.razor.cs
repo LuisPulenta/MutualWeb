@@ -24,6 +24,8 @@ namespace MutualWeb.Frontend.Pages.Clientes
 
         private int currentPage = 1;
         private int totalPages;
+        private int totalRegisters;
+        private bool IsLoading;
 
         public List<TipoCliente>? TiposClientes { get; set; }
 
@@ -72,6 +74,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
             if (ok)
             {
                 await LoadPagesAsync();
+                await LoadTotalRegistersAsync();
             }
         }
 
@@ -79,14 +82,18 @@ namespace MutualWeb.Frontend.Pages.Clientes
         private async Task<bool> LoadListAsync(int page)
         {
             ValidateRecordsNumber(RecordsNumber);
+            
             var url = $"api/tiposclientes?page={page}&recordsnumber={RecordsNumber}";
-
+            
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
             }
 
+            IsLoading = true;
             var responseHttp = await Repository.GetAsync<List<TipoCliente>>(url);
+            IsLoading = false;
+
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -118,6 +125,25 @@ namespace MutualWeb.Frontend.Pages.Clientes
             totalPages = responseHttp.Response;
         }
 
+        //-----------------------------------------------------------------------------------------------
+        private async Task LoadTotalRegistersAsync()
+        {
+            var url = $"api/tiposclientes/totalRegisters";
+
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"?filter={Filter}";
+            }
+
+            var responseHttp = await Repository.GetAsync<int>(url);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+            totalRegisters = responseHttp.Response;
+        }
         //-----------------------------------------------------------------------------------------------
         private async Task DeleteAsync(TipoCliente tipocliente)
         {

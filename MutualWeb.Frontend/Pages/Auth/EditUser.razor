@@ -14,7 +14,6 @@ else
                     <div class="card-header">
                         <span>
                             <i class="bi bi-person mx-2" /> Editar Usuario
-                            <a class="btn btn-sm btn-outline-secondary float-end mx-2" @onclick=@(() => ShowModal()) ><i class="bi bi-key" /> Cambiar Contraseña</a>
                         </span>
                     </div>
                     <div class="card-body">
@@ -55,7 +54,7 @@ else
 
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-sm btn-outline-success float-start" href="/usuarios"><i class="bi bi-arrow-left" /> Regresar</button>
+                        <button class="btn btn-sm btn-outline-success float-start" @onclick="Return"><i class="bi bi-arrow-left" /> Regresar</button>
                         <button class="btn btn-sm btn-outline-primary float-end mx-2" type="submit"><i class="bi bi-person-add" /> Guardar Cambios</button>
                     </div>
                 </div>
