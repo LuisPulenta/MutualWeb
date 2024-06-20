@@ -17,6 +17,41 @@
 
                     <Filter PlaceHolder="Buscar Cliente..." Callback=@FilterCallBack />
 
+
+
+
+
+                    <div class="mx-2" style="display: flex; flex-wrap:wrap; align-items: center;">
+                        <label>Tipo Cliente: </label>
+
+                        <select class="form-select m-lg-2" style="width:200px" @onchange="TipoClienteChangedAsync">
+                            <option value="0">Todos</option>
+                            @if (TiposClientes is not null)
+                            {
+                                @foreach (var tipoCliente in TiposClientes)
+                                {
+                                    <option value="@tipoCliente.Id">@tipoCliente.DescripcionTipoCliente</option>
+                                }
+                            }
+                        </select>
+
+                        <label>Socio: </label>
+                        <select class="form-select m-lg-2" style="width:80px" @onchange="SocioChangedAsync">
+                            <option value="0">Todos</option>
+                            <option value="1">SI</option>
+                            <option value="0">NO</option>                           
+                        </select>
+
+                        <label>Alta/Baja: </label>
+                        <select class="form-select m-lg-2" style="width:80px" @onchange="AltaBajaChangedAsync">
+                            <option value="0">Todos</option>
+                            <option value="1">SI</option>
+                            <option value="0">NO</option>
+                        </select>
+                    </div>
+
+
+                                        
                     <Pagination CurrentPage="currentPage"
                                 TotalPages="totalPages"
                                 SelectedPage="SelectedPageAsync"

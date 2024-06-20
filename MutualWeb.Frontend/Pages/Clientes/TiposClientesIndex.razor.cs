@@ -26,7 +26,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
         private int totalPages;
         private int totalRegisters;
         private bool IsLoading;
-
+        
         public List<TipoCliente>? TiposClientes { get; set; }
 
         protected override async Task OnInitializedAsync()

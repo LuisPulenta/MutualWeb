@@ -3,6 +3,7 @@ using MutualWeb.Frontend.Repositories;
 using MutualWeb.Shared.Entities.Clientes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using MutualWeb.Shared.DTOs;
 
 
 namespace MutualWeb.Frontend.Pages.Clientes
@@ -22,13 +23,19 @@ namespace MutualWeb.Frontend.Pages.Clientes
         private int totalPages;
         private int totalRegisters;
         private bool IsLoading;
+        private int selectedTipoCliente = 0;
+        private int selectedSocio = 0;
+        private int selectedAltaBaja = 0;
 
         public List<Cliente>? Clientes { get; set; }
+        public List<TipoCliente>? TiposClientes { get; set; }
+        private string allTiposClientes = "all_tiposclientes";
 
         //-----------------------------------------------------------------------------------------------
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
+            await LoadTiposClientesAsync();
         }
 
         //-----------------------------------------------------------------------------------------------
@@ -197,6 +204,37 @@ namespace MutualWeb.Frontend.Pages.Clientes
             {
                 RecordsNumber = 10;
             }
+        }
+
+        //-----------------------------------------------------------------------------------
+        private async Task LoadTiposClientesAsync()
+        {
+            var responseHttp = await Repository.GetAsync<List<TipoCliente>>("api/tiposclientes/combo");
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            }
+
+            TiposClientes = responseHttp.Response;
+        }
+
+        //---------------------------------------------------------------------------------------------------
+        private async Task TipoClienteChangedAsync(ChangeEventArgs e)
+        {
+            selectedTipoCliente = Convert.ToInt32(e.Value!);
+        }
+
+        //---------------------------------------------------------------------------------------------------
+        private async Task SocioChangedAsync(ChangeEventArgs e)
+        {
+            selectedSocio = Convert.ToInt32(e.Value!);
+        }
+
+        //---------------------------------------------------------------------------------------------------
+        private async Task AltaBajaChangedAsync(ChangeEventArgs e)
+        {
+            selectedAltaBaja = Convert.ToInt32(e.Value!);
         }
     }
 }
