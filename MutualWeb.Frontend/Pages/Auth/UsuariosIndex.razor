@@ -43,7 +43,7 @@
                                     {
                                         <tr>
                                             <td>@usuario.FullName</td>
-                                            <td>@usuario.UserType.ToString()</td>
+                                            <td>@EnumHelper.GetEnumDescription(usuario.UserType)</td>
                                             <td>@usuario.Email</td>
                                             <td>
                                                 <input type="checkbox" onclick="return false" @bind="@usuario.EmailConfirmed">

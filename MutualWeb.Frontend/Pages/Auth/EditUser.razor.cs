@@ -7,6 +7,7 @@ using MutualWeb.Frontend.Repositories;
 using MutualWeb.Frontend.Services;
 using MutualWeb.Shared.DTOs;
 using MutualWeb.Shared.Entities;
+using MutualWeb.Shared.Enums;
 using System.Net;
 
 namespace MutualWeb.Frontend.Pages.Auth
@@ -14,6 +15,7 @@ namespace MutualWeb.Frontend.Pages.Auth
     public partial class EditUser
     {
         private User? user;
+        private int Rol;
         [Parameter] public string? UserId { get; set; }
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
@@ -35,6 +37,14 @@ namespace MutualWeb.Frontend.Pages.Auth
         protected override async Task OnParametersSetAsync()
         {
             await LoadUserAsyc();
+            if (user!.UserType == UserType.Admin)
+            {
+                Rol = 1;
+            }
+            if (user.UserType == UserType.User)
+            {
+                Rol = 2;
+            }
         }
 
         //--------------------------------------------------------------------------------------------------------
@@ -66,6 +76,20 @@ namespace MutualWeb.Frontend.Pages.Auth
                 var messageError = "No se puede desactivar a uno mismo!!!";
                 await SweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
                 return;
+            }
+            if (Rol == 0)
+            {
+                var messageError = "Debe seleccionar un Rol";
+                await SweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+                return;
+            }
+            if (Rol == 1)
+            {
+                user.UserType= UserType.Admin;
+            }
+            if (Rol == 2)
+            {
+                user.UserType = UserType.User;
             }
 
             var responseHttp = await Repository.PutAsync<User, TokenDTO>("/api/accounts", user!);
