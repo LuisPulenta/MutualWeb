@@ -22,14 +22,16 @@ namespace MutualWeb.Frontend.Pages.Clientes
         private int currentPage = 1;
         private int totalPages;
         private int totalRegisters;
-        private bool IsLoading;
+        private bool IsLoading=false;
         private int selectedTipoCliente = 0;
         private int selectedSocio = 0;
         private int selectedAltaBaja = 0;
 
         public List<Cliente>? Clientes { get; set; }
         public List<TipoCliente>? TiposClientes { get; set; }
-        private string allTiposClientes = "all_tiposclientes";
+        private int? tipoCliente = null;
+        private bool? socio = null;
+        private bool? baja = null;
 
         //-----------------------------------------------------------------------------------------------
         protected override async Task OnInitializedAsync()
@@ -48,17 +50,18 @@ namespace MutualWeb.Frontend.Pages.Clientes
         //-----------------------------------------------------------------------------------------------
         private async Task LoadAsync(int page = 1)
         {
+            //IsLoading = true;
             if (!string.IsNullOrWhiteSpace(Page))
             {
                 page = Convert.ToInt32(Page);
-            }
-
+            }            
             var ok = await LoadListAsync(page);
             if (ok)
             {
                 await LoadPagesAsync();
                 await LoadTotalRegistersAsync();
             }
+            //IsLoading = false;
         }
 
         //-----------------------------------------------------------------------------------------------
@@ -72,9 +75,24 @@ namespace MutualWeb.Frontend.Pages.Clientes
                 url += $"&filter={Filter}";
             }
 
-            IsLoading = true;
+            if (tipoCliente !=null)
+            {
+                url += $"&TipoClienteFilter={tipoCliente}";
+            }
+
+            if (socio != null)
+            {
+                url += $"&SocioFilter={socio}";
+            }
+
+            if (baja != null)
+            {
+                url += $"&BajaFilter={baja}";
+            }
+
+            //IsLoading = true;
             var responseHttp = await Repository.GetAsync<List<Cliente>>(url);
-            IsLoading = false;
+            //IsLoading = false;
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -90,13 +108,30 @@ namespace MutualWeb.Frontend.Pages.Clientes
         {
             ValidateRecordsNumber(RecordsNumber);
             var url = $"api/clientes/totalPages?recordsnumber={RecordsNumber}";
-            
+
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
             }
 
+            if (tipoCliente != null)
+            {
+                url += $"&TipoClienteFilter={tipoCliente}";
+            }
+
+            if (socio != null)
+            {
+                url += $"&SocioFilter={socio}";
+            }
+
+            if (baja != null)
+            {
+                url += $"&BajaFilter={baja}";
+            }
+                        
+            //IsLoading = true;
             var responseHttp = await Repository.GetAsync<int>(url);
+            //IsLoading = false;
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -104,19 +139,37 @@ namespace MutualWeb.Frontend.Pages.Clientes
                 return;
             }
             totalPages = responseHttp.Response;
+            var a = 1;
         }
 
         //-----------------------------------------------------------------------------------------------
         private async Task LoadTotalRegistersAsync()
         {
-            var url = $"api/clientes/totalRegisters";
+            var url = $"api/clientes/totalRegisters?recordsnumber={RecordsNumber}";
 
             if (!string.IsNullOrEmpty(Filter))
             {
-                url += $"?filter={Filter}";
+                url += $"&filter={Filter}";
             }
 
+            if (tipoCliente != null)
+            {
+                url += $"&TipoClienteFilter={tipoCliente}";
+            }
+
+            if (socio != null)
+            {
+                url += $"&SocioFilter={socio}";
+            }
+
+            if (baja != null)
+            {
+                url += $"&BajaFilter={baja}";
+            }
+                        
+            //IsLoading = true;
             var responseHttp = await Repository.GetAsync<int>(url);
+            //IsLoading = false;
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -124,6 +177,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
                 return;
             }
             totalRegisters = responseHttp.Response;
+            var b = 2;
         }
 
         //-----------------------------------------------------------------------------------------------
@@ -179,7 +233,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
             await LoadAsync(page);
             await SelectedPageAsync(page);
         }
-        
+
         //-----------------------------------------------------------------------------------------------
         private async Task FilterCallBack(string filter)
         {
@@ -220,21 +274,42 @@ namespace MutualWeb.Frontend.Pages.Clientes
         }
 
         //---------------------------------------------------------------------------------------------------
-        private async Task TipoClienteChangedAsync(ChangeEventArgs e)
+        private async void TipoClienteChangedAsync(ChangeEventArgs e)
         {
             selectedTipoCliente = Convert.ToInt32(e.Value!);
+            if (selectedTipoCliente == 0)
+            { tipoCliente = null; }
+            else
+            {
+                tipoCliente = Convert.ToInt32(selectedTipoCliente);
+            }
+            await LoadAsync();
         }
 
         //---------------------------------------------------------------------------------------------------
-        private async Task SocioChangedAsync(ChangeEventArgs e)
+        private async void SocioChangedAsync(ChangeEventArgs e)
         {
             selectedSocio = Convert.ToInt32(e.Value!);
+            if (selectedSocio == 0)
+            { socio = null; };
+            if (selectedSocio == 1)
+            { socio = true; };
+            if (selectedSocio == 2)
+            { socio = false; };
+            await LoadAsync();
         }
 
         //---------------------------------------------------------------------------------------------------
-        private async Task AltaBajaChangedAsync(ChangeEventArgs e)
+        private async void AltaBajaChangedAsync(ChangeEventArgs e)
         {
             selectedAltaBaja = Convert.ToInt32(e.Value!);
+            if (selectedAltaBaja == 0)
+            { baja = null; };
+            if (selectedAltaBaja == 1)
+            { baja = true; };
+            if (selectedAltaBaja == 2)
+            { baja = false; };
+            await LoadAsync();
         }
     }
 }

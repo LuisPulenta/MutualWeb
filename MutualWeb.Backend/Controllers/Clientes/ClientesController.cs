@@ -6,6 +6,7 @@ using MutualWeb.Backend.Data;
 using MutualWeb.Backend.Helpers;
 using MutualWeb.Shared.DTOs;
 using MutualWeb.Shared.Entities.Clientes;
+using System.Linq;
 
 namespace MutualWeb.Backend.Controllers
 {
@@ -33,11 +34,26 @@ namespace MutualWeb.Backend.Controllers
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
             {
                 queryable = queryable.Where(x => x.ApellidoTitular.ToLower().Contains(pagination.Filter.ToLower())
-                || x.NombreTitular.ToLower().Contains(pagination.Filter.ToLower())
-                || x.Especialidad!.Nombre.ToLower().Contains(pagination.Filter.ToLower())
-                || x.TipoCliente!.DescripcionTipoCliente.ToLower().Contains(pagination.Filter.ToLower())
+                //|| x.NombreTitular.ToLower().Contains(pagination.Filter.ToLower())
+                //|| x.Especialidad!.Nombre.ToLower().Contains(pagination.Filter.ToLower())
+                //|| x.TipoCliente!.DescripcionTipoCliente.ToLower().Contains(pagination.Filter.ToLower())
                 );
-            }           
+            }
+
+            if (pagination.TipoClienteFilter != null)
+            {
+                queryable = queryable.Where(x => x.TipoClienteId == pagination.TipoClienteFilter!);
+            }
+
+            //if (pagination.SocioFilter != null)
+            //{
+            //    queryable = queryable.Where(x => x.Socio == pagination.SocioFilter!);
+            //}
+
+            //if (pagination.BajaFilter != null)
+            //{
+            //    queryable = queryable.Where(x => x.Socio == pagination.BajaFilter!);
+            //}
 
             return Ok(await queryable                
                 .OrderBy(x => x.ApellidoTitular)
@@ -54,8 +70,27 @@ namespace MutualWeb.Backend.Controllers
 
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
             {
-                queryable = queryable.Where(x => x.Nombre.ToLower().Contains(pagination.Filter.ToLower()));
+                queryable = queryable.Where(x => x.ApellidoTitular.ToLower().Contains(pagination.Filter.ToLower())
+                //|| x.NombreTitular.ToLower().Contains(pagination.Filter.ToLower())
+                //|| x.Especialidad!.Nombre.ToLower().Contains(pagination.Filter.ToLower())
+                //|| x.TipoCliente!.DescripcionTipoCliente.ToLower().Contains(pagination.Filter.ToLower())
+                );
             }
+
+            if (pagination.TipoClienteFilter != null)
+            {
+                queryable = queryable.Where(x => x.TipoClienteId == pagination.TipoClienteFilter!);
+            }
+
+            //if (pagination.SocioFilter != null)
+            //{
+            //    queryable = queryable.Where(x => x.Socio == pagination.SocioFilter!);
+            //}
+
+            //if (pagination.BajaFilter != null)
+            //{
+            //    queryable = queryable.Where(x => x.Socio == pagination.BajaFilter!);
+            //}
 
             double count = await queryable.CountAsync();
             double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
@@ -67,12 +102,31 @@ namespace MutualWeb.Backend.Controllers
         public async Task<ActionResult> GetTotalRegisters([FromQuery] PaginationDTO pagination)
         {
             var queryable = _context.Clientes
-                .AsQueryable();
+               .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
             {
-                queryable = queryable.Where(x => x.Nombre.ToLower().Contains(pagination.Filter.ToLower()));
+                queryable = queryable.Where(x => x.ApellidoTitular.ToLower().Contains(pagination.Filter.ToLower())
+                //|| x.NombreTitular.ToLower().Contains(pagination.Filter.ToLower())
+                //|| x.Especialidad!.Nombre.ToLower().Contains(pagination.Filter.ToLower())
+                //|| x.TipoCliente!.DescripcionTipoCliente.ToLower().Contains(pagination.Filter.ToLower())
+                );
             }
+
+            if (pagination.TipoClienteFilter != null)
+            {
+                queryable = queryable.Where(x => x.TipoClienteId == pagination.TipoClienteFilter!);
+            }
+
+            //if (pagination.SocioFilter != null)
+            //{
+            //    queryable = queryable.Where(x => x.Socio == pagination.SocioFilter!);
+            //}
+
+            //if (pagination.BajaFilter != null)
+            //{
+            //    queryable = queryable.Where(x => x.Socio == pagination.BajaFilter!);
+            //}
 
             int count = await queryable.CountAsync();
             return Ok(count);
