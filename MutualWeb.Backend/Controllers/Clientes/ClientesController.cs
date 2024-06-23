@@ -45,10 +45,10 @@ namespace MutualWeb.Backend.Controllers
                 queryable = queryable.Where(x => x.TipoClienteId == pagination.TipoClienteFilter!);
             }
 
-            //if (pagination.SocioFilter != null)
-            //{
-            //    queryable = queryable.Where(x => x.Socio == pagination.SocioFilter!);
-            //}
+            if (pagination.SocioFilter != null)
+            {
+                queryable = queryable.Where(x => x.Socio == pagination.SocioFilter!);
+            }
 
             //if (pagination.BajaFilter != null)
             //{
@@ -82,10 +82,10 @@ namespace MutualWeb.Backend.Controllers
                 queryable = queryable.Where(x => x.TipoClienteId == pagination.TipoClienteFilter!);
             }
 
-            //if (pagination.SocioFilter != null)
-            //{
-            //    queryable = queryable.Where(x => x.Socio == pagination.SocioFilter!);
-            //}
+            if (pagination.SocioFilter != null)
+            {
+                queryable = queryable.Where(x => x.Socio == pagination.SocioFilter!);
+            }
 
             //if (pagination.BajaFilter != null)
             //{
@@ -118,10 +118,10 @@ namespace MutualWeb.Backend.Controllers
                 queryable = queryable.Where(x => x.TipoClienteId == pagination.TipoClienteFilter!);
             }
 
-            //if (pagination.SocioFilter != null)
-            //{
-            //    queryable = queryable.Where(x => x.Socio == pagination.SocioFilter!);
-            //}
+            if (pagination.SocioFilter != null)
+            {
+                queryable = queryable.Where(x => x.Socio == pagination.SocioFilter!);
+            }
 
             //if (pagination.BajaFilter != null)
             //{
