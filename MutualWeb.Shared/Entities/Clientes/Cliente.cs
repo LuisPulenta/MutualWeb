@@ -209,5 +209,11 @@ namespace MutualWeb.Shared.Entities.Clientes
 
         [Display(Name = "Cónyuge")]
         public string Conyuge => $"{ApellidoConyuge} {NombreConyuge}";
+
+        [Display(Name = "Baja")]
+        public string EsBaja => FechaBaja!=null ? "SI" : "NO";
+
+        [Display(Name = "Socio")]
+        public string EsSocio => Socio ? "SI" : "NO";
     }
 }

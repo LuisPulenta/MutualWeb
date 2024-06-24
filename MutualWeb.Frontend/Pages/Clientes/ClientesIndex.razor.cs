@@ -50,7 +50,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
         //-----------------------------------------------------------------------------------------------
         private async Task LoadAsync(int page = 1)
         {
-            //IsLoading = true;
+            IsLoading = true;
             if (!string.IsNullOrWhiteSpace(Page))
             {
                 page = Convert.ToInt32(Page);
@@ -61,7 +61,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
                 await LoadPagesAsync();
                 await LoadTotalRegistersAsync();
             }
-            //IsLoading = false;
+            IsLoading = false;
         }
 
         //-----------------------------------------------------------------------------------------------
@@ -89,10 +89,9 @@ namespace MutualWeb.Frontend.Pages.Clientes
             {
                 url += $"&BajaFilter={baja}";
             }
-
-            //IsLoading = true;
+                        
             var responseHttp = await Repository.GetAsync<List<Cliente>>(url);
-            //IsLoading = false;
+            
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -129,9 +128,8 @@ namespace MutualWeb.Frontend.Pages.Clientes
                 url += $"&BajaFilter={baja}";
             }
                         
-            //IsLoading = true;
             var responseHttp = await Repository.GetAsync<int>(url);
-            //IsLoading = false;
+            
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -139,7 +137,6 @@ namespace MutualWeb.Frontend.Pages.Clientes
                 return;
             }
             totalPages = responseHttp.Response;
-            var a = 1;
         }
 
         //-----------------------------------------------------------------------------------------------
@@ -167,9 +164,8 @@ namespace MutualWeb.Frontend.Pages.Clientes
                 url += $"&BajaFilter={baja}";
             }
                         
-            //IsLoading = true;
             var responseHttp = await Repository.GetAsync<int>(url);
-            //IsLoading = false;
+
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -177,7 +173,6 @@ namespace MutualWeb.Frontend.Pages.Clientes
                 return;
             }
             totalRegisters = responseHttp.Response;
-            var b = 2;
         }
 
         //-----------------------------------------------------------------------------------------------
@@ -274,7 +269,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
         }
 
         //---------------------------------------------------------------------------------------------------
-        private async void TipoClienteChangedAsync(ChangeEventArgs e)
+        private async Task TipoClienteChangedAsync(ChangeEventArgs e)
         {
             selectedTipoCliente = Convert.ToInt32(e.Value!);
             if (selectedTipoCliente == 0)
@@ -287,7 +282,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
         }
 
         //---------------------------------------------------------------------------------------------------
-        private async void SocioChangedAsync(ChangeEventArgs e)
+        private async Task SocioChangedAsync(ChangeEventArgs e)
         {
             selectedSocio = Convert.ToInt32(e.Value!);
             if (selectedSocio == 0)
@@ -300,7 +295,7 @@ namespace MutualWeb.Frontend.Pages.Clientes
         }
 
         //---------------------------------------------------------------------------------------------------
-        private async void AltaBajaChangedAsync(ChangeEventArgs e)
+        private async Task AltaBajaChangedAsync(ChangeEventArgs e)
         {
             selectedAltaBaja = Convert.ToInt32(e.Value!);
             if (selectedAltaBaja == 0)

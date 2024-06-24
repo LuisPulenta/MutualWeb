@@ -50,10 +50,17 @@ namespace MutualWeb.Backend.Controllers
                 queryable = queryable.Where(x => x.Socio == pagination.SocioFilter!);
             }
 
-            //if (pagination.BajaFilter != null)
-            //{
-            //    queryable = queryable.Where(x => x.Socio == pagination.BajaFilter!);
-            //}
+            if (pagination.BajaFilter != null)
+            {
+                if (pagination.BajaFilter == true)
+                {
+                    queryable = queryable.Where(x => x.FechaBaja != null);
+                }
+                else
+                {
+                    queryable = queryable.Where(x => x.FechaBaja == null);
+                }
+            }
 
             return Ok(await queryable                
                 .OrderBy(x => x.ApellidoTitular)
@@ -87,10 +94,17 @@ namespace MutualWeb.Backend.Controllers
                 queryable = queryable.Where(x => x.Socio == pagination.SocioFilter!);
             }
 
-            //if (pagination.BajaFilter != null)
-            //{
-            //    queryable = queryable.Where(x => x.Socio == pagination.BajaFilter!);
-            //}
+            if (pagination.BajaFilter != null)
+            {
+                if (pagination.BajaFilter==true)
+                {
+                    queryable = queryable.Where(x => x.FechaBaja != null);
+                }
+                else
+                {
+                    queryable = queryable.Where(x => x.FechaBaja == null);
+                }                
+            }
 
             double count = await queryable.CountAsync();
             double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
@@ -123,10 +137,17 @@ namespace MutualWeb.Backend.Controllers
                 queryable = queryable.Where(x => x.Socio == pagination.SocioFilter!);
             }
 
-            //if (pagination.BajaFilter != null)
-            //{
-            //    queryable = queryable.Where(x => x.Socio == pagination.BajaFilter!);
-            //}
+            if (pagination.BajaFilter != null)
+            {
+                if (pagination.BajaFilter == true)
+                {
+                    queryable = queryable.Where(x => x.FechaBaja != null);
+                }
+                else
+                {
+                    queryable = queryable.Where(x => x.FechaBaja == null);
+                }
+            }
 
             int count = await queryable.CountAsync();
             return Ok(count);

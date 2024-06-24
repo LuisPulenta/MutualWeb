@@ -17,10 +17,6 @@
 
                     <Filter PlaceHolder="Buscar Cliente..." Callback=@FilterCallBack />
 
-
-
-
-
                     <div class="mx-2" style="display: flex; flex-wrap:wrap; align-items: center;">
                         <label>Tipo Cliente: </label>
 
@@ -42,16 +38,14 @@
                             <option value="2">NO</option>                           
                         </select>
 
-                        <label>Alta/Baja: </label>
+                        <label>Baja: </label>
                         <select class="form-select m-lg-2" style="width:80px" @onchange="AltaBajaChangedAsync">
                             <option value="0">Todos</option>
                             <option value="1">SI</option>
                             <option value="2">NO</option>
                         </select>
                     </div>
-
-
-                                        
+                    
                     <Pagination CurrentPage="currentPage"
                                 TotalPages="totalPages"
                                 SelectedPage="SelectedPageAsync"
@@ -76,6 +70,7 @@
                                         <th>Celular</th>
                                         <th>Fecha Nacim.</th>
                                         <th>Socio</th>
+                                        <th>Baja</th>
                                         <th style="width:210px"></th>
 
                                     </tr>
@@ -105,7 +100,12 @@
                                             <td>@cliente.Telefono</td>
                                             <td>@cliente.Celular</td>
                                             <td>@cliente.FechaNacimiento</td>
-                                            <td>@cliente.Socio</td>
+                                            <td>@cliente.EsSocio</td>
+                                            <td>@cliente.EsBaja</td>
+                                            @* <td>
+                                                <input type="checkbox" onclick="return false" @bind="@cliente.Socio">
+                                            </td> *@
+                                            
                                             <td>
                                                 <a href="/clientes/edit/@cliente.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil" /> Editar</a>
                                                 <a class="btn btn-sm btn-info btn-sm" href="/clientes/details/@cliente.Id"><i class="bi bi-binoculars-fill"></i> Detalles</a>
