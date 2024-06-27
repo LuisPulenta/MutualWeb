@@ -1,9 +1,14 @@
 ﻿@page "/clientes/create"
 @using MutualWeb.Shared.Entities.Clientes
 
-<h3>Crear Cliente</h3>
 
-<ClienteForm @ref="clienteForm" Cliente="cliente" Especialidades="especialidades" TiposClientes="tiposclientes" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+<div class="bg-info bg-opacity-25">
+    <h3>Crear Cliente</h3>
+
+    <ClienteForm @ref="clienteForm" Cliente="cliente" Especialidades="especialidades" TiposClientes="tiposclientes" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+</div>
+
+
 
 
 

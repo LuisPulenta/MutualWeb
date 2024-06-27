@@ -41,7 +41,6 @@ namespace MutualWeb.Shared.Entities.Clientes
 
         [Display(Name = "Estado Civil")]
         [MaxLength(3, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string EstadoCivil { get; set; } = null!;
 
         [Display(Name = "Lugar de Nacimiento")]
@@ -74,12 +73,10 @@ namespace MutualWeb.Shared.Entities.Clientes
 
         [Display(Name = "Apellido Cónyuge")]
         [MaxLength(25, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string? ApellidoConyuge { get; set; } = null!;
 
         [Display(Name = "Nombre Cónyuge")]
         [MaxLength(30, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string? NombreConyuge { get; set; } = null!;
 
         [Display(Name = "DNI Cónyuge")]
@@ -98,6 +95,7 @@ namespace MutualWeb.Shared.Entities.Clientes
         public TipoCliente TipoCliente { get; set; } = null!;
 
         [Display(Name = "Tipo de Cliente")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un {0}.")]
         public int? TipoClienteId { get; set; }
 
